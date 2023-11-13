@@ -1,0 +1,7 @@
+version: "3.9"
+
+services:
+  stock-data:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_PASSWORD=123
