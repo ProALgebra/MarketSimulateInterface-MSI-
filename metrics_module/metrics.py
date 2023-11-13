@@ -23,10 +23,10 @@ class Metrics():
         self.createTotals()
         # print(self.totals)
         self.relativeTotal()
-        # print(self.relative_totals)
+        print(self.relative_totals)
         self.balance()
         # print(self.balance)
-        self.createDPNL()
+        # self.createDPNL()
         # print(self.DPNL)
         # self.Sharp()
 
