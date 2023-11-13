@@ -74,7 +74,7 @@ class GraphInterface:
         plt.xlabel('Date')
         plt.ylabel('balance')
         plt.title('Balance Plot')
-        plt.stackplot(data_x, y[0], y[1], labels=tikers, alpha=0.5)
+        plt.stackplot(data_x, y[0], labels=tikers, alpha=0.5)
         plt.legend(loc='upper left')
         plt.grid(True, linestyle='--', alpha=0.5)
         plt.show()
