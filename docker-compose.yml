@@ -1,7 +1,30 @@
 version: "3.9"
 
 services:
-  stock-data:
+  database:
+    container_name: "database"
     image: postgres:15-alpine
     environment:
       - POSTGRES_PASSWORD=123
+    ports:
+      - "5432:5432"
+    volumes:
+      - "./data/postgres:/var/lib/postgresql"
+  mq:
+    container_name: "mq"
+    image: rabbitmq:3.12-management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+  file-storage:
+    container_name: "file-storage"
+    image: minio/minio
+    command: server --console-address ":9090" /data
+    ports:
+      - "9090:9090"
+      - "9000:9000"
+    volumes:
+      - "./data/minio:/data"
+    environment:
+      MINIO_ROOT_USER: "root"
+      MINIO_ROOT_PASSWORD: "123qweasd"
