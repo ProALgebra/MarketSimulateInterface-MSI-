@@ -10,6 +10,7 @@ from shared.dbs.postgres.postgresql import get_pg_uri
 from shared.dbs.postgres.models.base_model import Base
 from shared.dbs.postgres.models.ticket_history import TicketHistory
 from shared.dbs.postgres.models.users import Users
+from shared.dbs.postgres.models.task import Tasks
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
