@@ -1,11 +1,11 @@
 from datetime import datetime
-from uuid import UUID
+from uuid import UUID, uuid4
 
 from shared.dbs.postgres.models.task import Tasks
 
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import async_sessionmaker
-from sqlalchemy import select
+from sqlalchemy import select, update
 
 
 class TaskRepository:
@@ -18,16 +18,25 @@ class TaskRepository:
             task = session.scalars(stmt)
             return task.first()
 
-    def insert_task(self, task_id: UUID, date_from: datetime, date_to: datetime, commission: float):
+    def insert_task(self, user_id: int, date_from: datetime, date_to: datetime, commission: float) -> UUID:
+        task_id = uuid4()
         with self.session() as session:
             session.add(
                 Tasks(
                     task_id=task_id,
+                    user_id=user_id,
                     date_from=date_from,
                     date_to=date_to,
                     commission=commission
                 )
             )
+            session.commit()
+            return task_id
+
+    def update_task_result(self, task_id: UUID, result: dict):
+        with self.session() as session:
+            stmt = update(Tasks).where(Tasks.task_id == task_id).values(result=result)
+            session.execute(stmt)
             session.commit()
 
 
@@ -41,14 +50,23 @@ class AsyncTaskRepository:
             task = await session.scalars(stmt)
             return task.first()
 
-    async def insert_task(self, task_id: UUID, date_from: datetime, date_to: datetime, commission: float):
+    async def insert_task(self, user_id: int, date_from: datetime, date_to: datetime, commission: float)  -> UUID:
+        task_id = uuid4()
         async with self.session() as session:
             session.add(
                 Tasks(
                     task_id=task_id,
+                    user_id=user_id,
                     date_from=date_from,
                     date_to=date_to,
                     commission=commission
                 )
             )
+            await session.commit()
+            return uuid4()
+
+    async def update_task_result(self, task_id: UUID, result: dict):
+        async with self.session() as session:
+            stmt = update(Tasks).where(Tasks.task_id == task_id).values(result=result)
+            await session.execute(stmt)
             await session.commit()

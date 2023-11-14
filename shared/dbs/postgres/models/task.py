@@ -41,6 +41,7 @@ class Tasks(Base):
 
     result: Mapped[dict] = mapped_column(
         "result",
-        JSON
+        JSON,
+        nullable=True
     )
 
