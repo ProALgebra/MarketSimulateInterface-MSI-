@@ -7,6 +7,7 @@ class GraphInterface:
         self.points_for_relative_totals = metrics.relative_totals
         self.points_for_balances = metrics.balance
         self.points_for_DPNL = metrics.DPNL
+        self.points_for_comissions = metrics.commissions
 
 
     def plot_Total(self):
@@ -50,6 +51,17 @@ class GraphInterface:
         plt.xlabel('Date')
         plt.ylabel('relatire total')
         plt.title('Relatire Total Plot')
+        plt.grid(True, linestyle='--', alpha=0.5)
+        plt.legend()
+        plt.show()
+
+    def plot_comissions(self):
+        data_x = list(range(0, len(self.points_for_comissions)))
+        data_y = list(self.points_for_comissions.values())
+        plt.plot(data_x, data_y, label='comissions', color='red')
+        plt.xlabel('Date')
+        plt.ylabel('comissions')
+        plt.title('comissions')
         plt.grid(True, linestyle='--', alpha=0.5)
         plt.legend()
         plt.show()
