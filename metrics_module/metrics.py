@@ -26,9 +26,9 @@ class Metrics():
         self.createTotals()
         # print(self.totals)
         self.relativeTotal()
-        print(self.relative_totals)
+        # print(self.relative_totals)
         self.balancee()
-        print(self.balance)
+        # print(self.balance)
         self.createDPNL()
         # print(self.DPNL)
         # self.Sharp()
@@ -55,7 +55,7 @@ class Metrics():
         self.DPNL = {}
         days = sorted(list(self.logs.keys()))[1:]
         for i in range(1, len(self.logs)-1):
-            self.DPNL[days[i]] = (self.totalAtDay(days[i])- self.totalAtDay(days[i-1])) / self.totalAtDay(days[i-1])
+            self.DPNL[days[i]] = (self.totalAtDay(days[i]) - self.totalAtDay(days[i-1])) / self.totalAtDay(days[i-1])
 
     def relativeTotal(self):
         self.relative_totals = {}
@@ -74,14 +74,15 @@ class Metrics():
             day_tickers = self.all_tickers
             ticker_to_absolute_costs = database.getTicketsPricesAtDay(ticker_ndarray, day)
             for ticker in day_tickers:
-                money_in_that_ticker = portfel[day][ticker] * ticker_to_absolute_costs[ticker]
+                if ticker in portfel[day]:
+                    money_in_that_ticker = portfel[day][ticker] * ticker_to_absolute_costs[ticker]
+                else:
+                    money_in_that_ticker = 0
                 day_balance[ticker] = money_in_that_ticker/self.totalAtDay(day)
 
             free_money = portfel[day]["FREE"]
             day_balance["FREE"] = free_money/self.totalAtDay(day)
-
             self.balance[day] = day_balance
-
 
     def Sharp(self):
         pass
@@ -90,14 +91,11 @@ class Metrics():
 def main():
     metrics = Metrics(logs = logs)
 
-    # graph_interface_1 = GraphInterface(metrics.totals, label='Total')
-    # graph_interface_2 = GraphInterface(metrics.DPNL, label='DPNL')
-    graph_interface_3 = GraphInterface(metrics.balance, label='Balances')
-
-    # graph_interface_1.plot_Total()
-    # graph_interface_2.plot_DPNL()
-    graph_interface_3.plot_balance()
-
+    graph = GraphInterface(metrics)
+    graph.plot_relatire_Total()
+    graph.plot_balance()
+    graph.plot_DPNL()
+    graph.plot_Total()
 
 
 if __name__ == "__main__":
