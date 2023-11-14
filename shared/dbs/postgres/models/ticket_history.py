@@ -2,8 +2,9 @@ from datetime import datetime
 
 from .base_model import Base
 
-from sqlalchemy import (Integer, String, DATETIME, FLOAT)
+from sqlalchemy import (Integer, String, DateTime, FLOAT)
 from sqlalchemy.orm import Mapped, mapped_column
+
 
 class TicketHistory(Base):
     __tablename__ = 'ticket'
@@ -17,7 +18,7 @@ class TicketHistory(Base):
 
     day: Mapped[datetime] = mapped_column(
         'day',
-        DATETIME
+        DateTime
     )
 
     ticket: Mapped[str] = mapped_column(
