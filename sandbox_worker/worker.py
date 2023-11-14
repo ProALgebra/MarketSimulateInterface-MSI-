@@ -33,11 +33,21 @@ def run_sandbox(task_id: str):
 
     task_data = task_repo.get_task_by_id(task_id)
 
+    ...  # запустить песок с параметрами из task_data
+    pass
+    pass
+    pass
 
+    ...  # обработать результат песка, сохранить
+    pass
+    pass
+    pass
+    task_repo.update_task_result(task_id, {}) # < ---  результат сюда
 
-    ...
-    ...
-    ...
+    ... # нарисовать графики и положить в хранилище
+    pass
+    pass
+    pass
 
 
 def unzip_to_string(zip: bytes, filename: str) -> str:
