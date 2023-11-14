@@ -7,9 +7,9 @@ dramatiq.set_broker(rabbitmq_broker)
 
 
 @dramatiq.actor()
-def work(filename, content):
+def work(ticker: str, price: float):
     pass
 
 if __name__ == "__main__":
     print("запускаю таск для консумера")
-    work.send("test", "00000")
+    work.send("test", 1.01)
