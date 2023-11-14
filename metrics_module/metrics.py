@@ -126,11 +126,11 @@ class Metrics:
 def main():
     metrics = Metrics(logs=logs, task_id = 0)
 
-    graph = GraphInterface(metrics)
+    graph = GraphInterface(metrics, idTask=0)
 
-    # graph.plot_relatire_Total()
+    graph.plot_relatire_Total()
     # graph.plot_balance()
-    graph.plot_DPNL()
+    # graph.plot_DPNL()
     # graph.plot_Total()
     # graph.plot_comissions()
 

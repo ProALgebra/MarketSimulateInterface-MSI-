@@ -14,7 +14,7 @@ class GraphInterface:
     
     
     def plot_Total(self):
-        data_x = list(self.points_for_total.key())
+        data_x = list(self.points_for_total.keys())
         data_y = list(self.points_for_total.values())
         plt.plot(data_x, data_y, label='Total')
         plt.xlabel('Date')
@@ -28,10 +28,11 @@ class GraphInterface:
         buffer.seek(0)
         binary_data = buffer.read()
         self.all_plots['Total']=(binary_data)
+        plt.show()
     
     
     def plot_DPNL(self):
-        data_x = list(self.points_for_DPNL.key)
+        data_x = list(self.points_for_DPNL.keys())
         data_y = list(self.points_for_DPNL.values())
         plt.plot(data_x, data_y, label='DPNL', color='red')
         plt.xlabel('Date')
@@ -45,6 +46,7 @@ class GraphInterface:
         buffer.seek(0)
         binary_data = buffer.read()
         self.all_plots['DPNL']=(binary_data)
+        plt.show()
     
     # def plot_sharpe(self):
     #     plt.plot(self.data_x, self.data_y, label='Sharpe', color='green')
@@ -58,7 +60,7 @@ class GraphInterface:
     #     plt.show()
     
     def plot_relatire_Total(self):
-        data_x = list(self.points_for_relative_totals.key)
+        data_x = list(self.points_for_relative_totals.keys())
         data_y = list(self.points_for_relative_totals.values())
         plt.plot(data_x, data_y, label='relatire_Total', color='red')
         plt.xlabel('Date')
@@ -72,6 +74,7 @@ class GraphInterface:
         buffer.seek(0)
         binary_data = buffer.read()
         self.all_plots['relatire_Total']=(binary_data)
+        plt.show()
     
     def plot_balance(self):
         dates = sorted(list(self.points_for_balances))
@@ -96,7 +99,8 @@ class GraphInterface:
         plt.savefig(buffer, format='jpg')
         buffer.seek(0)
         binary_data = buffer.read()
-                    self.all_plots['balance']=(binary_data)
+        self.all_plots['balance']=(binary_data)
+        plt.show()
 
 def save_plots(self):
     client = minio.Minio(
@@ -104,13 +108,11 @@ def save_plots(self):
                          "STS9GtnODgKPvimPR5pm",
                          "3pOTPpbOlw1MbBWHGG7k48ihidhehAiVg4zXC8J9",
                          secure=False)
-        bucket = f"{self.idTask}-plots"
-        if not client.path.exists(bucket):
-            client.makedirs(bucket)
-        for key, value in self.all_figures:
-            client.put_object(
-                              bucket, f'{key}.jpg',
-                              value,len(value))
+    bucket = f"{self.idTask}-plots"
+    if not client.path.exists(bucket):
+        client.makedirs(bucket)
+    for key, value in self.all_figures:
+        client.put_object( bucket, f'{key}.jpg',value,len(value))
 
 
 def main():
