@@ -2,7 +2,8 @@ import io
 from uuid import UUID
 
 import zipfile
-
+from graphics.graph import *
+from metrics_module import *
 import dramatiq
 from dramatiq.brokers.rabbitmq import RabbitmqBroker
 
@@ -54,9 +55,21 @@ def run_sandbox(task_id: str):
     task_repo.update_task_result(task_id, {}) # < ---  результат сюда
 
     ... # нарисовать графики и положить в хранилище
-    pass
-    pass
-    pass
+def main():
+    metrics = Metrics(logs=logs, task_id = 0)
+
+    graph = GraphInterface(metrics, idTask=0, minio_client)
+
+    graph.plot_relatire_Total()
+    graph.plot_balance()
+    graph.plot_DPNL()
+    graph.plot_Total()
+    graph.plot_comissions()
+    graph.save_plots()
+
+
+if __name__ == "__main__":
+    main()
 
 
 def unzip_to_string(zip: bytes, filename: str) -> str:
