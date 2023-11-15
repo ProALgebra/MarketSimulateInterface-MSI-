@@ -45,3 +45,8 @@ class Tasks(Base):
         nullable=True
     )
 
+    start_cash: Mapped[float] = mapped_column(
+        "start_cash",
+        Float
+    )
+
