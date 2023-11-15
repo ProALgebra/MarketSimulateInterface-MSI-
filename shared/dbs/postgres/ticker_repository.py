@@ -1,10 +1,10 @@
 from datetime import datetime
 
-from shared.dbs.postgres.models.ticket_history import TicketHistory
-
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.asyncio import async_sessionmaker
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import async_sessionmaker
+from sqlalchemy.orm import sessionmaker
+
+from shared.dbs.postgres.models.ticket_history import TicketHistory
 
 
 class TickerHistoryRepository:
@@ -13,7 +13,9 @@ class TickerHistoryRepository:
 
     def get_tickers_in_range(self, _from: datetime, _to: datetime):
         with self.session() as session:
-            stmt = select(TicketHistory).where((TicketHistory.day >= _from) & (TicketHistory.day < _to))
+            stmt = select(TicketHistory
+                          ).where((TicketHistory.day >= _from) & (TicketHistory.day < _to)
+                                  ).order_by(TicketHistory.day)
             tickets = session.scalars(stmt)
             return tickets.all()
 
