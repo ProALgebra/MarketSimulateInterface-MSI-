@@ -3,6 +3,7 @@ from uuid import UUID
 import zipfile
 from graphics.graph import *
 import dramatiq
+from dramatiq import actor as dramatiq_actor
 from dramatiq.brokers.rabbitmq import RabbitmqBroker
 
 from metrics_module.metrics import Metrics
@@ -19,10 +20,10 @@ from shared.dbs.postgres.ticker_repository import TickerHistoryRepository
 from shared.dbs.postgres.postgresql import sync_session
 
 broker = RabbitmqBroker(host=MQ_HOST)
-dramatiq.set_broker(MQ_HOST)
+dramatiq.set_broker(broker)
 
 
-@dramatiq.actor()
+@dramatiq_actor
 def run_sandbox(task_id: str):
     try:
         task_id: UUID = UUID(task_id)

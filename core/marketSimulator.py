@@ -1,5 +1,5 @@
-from sandbox import Portfolio,MarketAlgorithm
-from dbBrokerService import DbBrokerService
+from core.sandbox import Portfolio, MarketAlgorithm
+from core.dbBrokerService import DbBrokerService
 from shared.dbs.postgres.postgresql import sync_session
 from shared.dbs.postgres.ticker_repository import TickerHistoryRepository
 

@@ -1,7 +1,6 @@
 import datetime
 from typing import Dict
 from dateutil.relativedelta import relativedelta
-from core import dbBrokerService
 
 
 
@@ -17,7 +16,7 @@ class Share:
 
 
 class Portfolio:
-    def __init__(self, cash: float, shares: Dict[Ticker, (Share, int)]):
+    def __init__(self, cash: float, shares: dict[Ticker, (Share, int)]):
         self.shares = shares
         self.cash = cash
 

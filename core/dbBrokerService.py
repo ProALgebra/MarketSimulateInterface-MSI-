@@ -1,5 +1,5 @@
 from shared.dbs.postgres.ticker_repository import TickerHistoryRepository
-from sandbox import Broker
+from core.sandbox import Broker
 
 from dateutil.relativedelta import relativedelta
 class DbBrokerService:
