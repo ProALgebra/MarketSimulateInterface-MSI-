@@ -119,7 +119,3 @@ class MarketAlgorithm:
                 self.market.sell(tiker, actions_cover_10_percent)
 
 
-
-
-
-
