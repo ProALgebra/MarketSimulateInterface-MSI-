@@ -1,7 +1,8 @@
+import io
+
 import matplotlib.pyplot as plt
 import numpy as np
-import io
-import minio
+
 
 class GraphInterface:
     def __init__(self, metrics, idTask, client):
@@ -11,9 +12,8 @@ class GraphInterface:
         self.points_for_DPNL = metrics.DPNL
         self.idTask = idTask
         self.all_plots = {}
-        self.client =client
-    
-    
+        self.client = client
+
     def plot_Total(self):
         data_x = list(self.points_for_total.keys())
         data_y = list(self.points_for_total.values())
@@ -28,9 +28,8 @@ class GraphInterface:
         plt.savefig(buffer, format='jpg')
         buffer.seek(0)
         binary_data = buffer.read()
-        self.all_plots['Total']=(binary_data)
-    
-    
+        self.all_plots['Total'] = (binary_data)
+
     def plot_DPNL(self):
         data_x = list(self.points_for_DPNL.keys())
         data_y = list(self.points_for_DPNL.values())
@@ -45,8 +44,8 @@ class GraphInterface:
         plt.savefig(buffer, format='jpg')
         buffer.seek(0)
         binary_data = buffer.read()
-        self.all_plots['DPNL']=(binary_data)
-    
+        self.all_plots['DPNL'] = (binary_data)
+
     def plot_relatire_Total(self):
         data_x = list(self.points_for_relative_totals.keys())
         data_y = list(self.points_for_relative_totals.values())
@@ -61,9 +60,8 @@ class GraphInterface:
         plt.savefig(buffer, format='jpg')
         buffer.seek(0)
         binary_data = buffer.read()
-        self.all_plots['relatire_Total']=(binary_data)
+        self.all_plots['relatire_Total'] = (binary_data)
 
-    
     def plot_comissions(self):
         data_x = list(self.points_for_relative_totals.keys())
         data_y = list(self.points_for_relative_totals.values())
@@ -78,8 +76,8 @@ class GraphInterface:
         plt.savefig(buffer, format='jpg')
         buffer.seek(0)
         binary_data = buffer.read()
-        self.all_plots['comissions']=(binary_data)
-    
+        self.all_plots['comissions'] = (binary_data)
+
     def plot_balance(self):
         dates = sorted(list(self.points_for_balances))
         tikers = list(self.points_for_balances[dates[0]].keys())
@@ -87,10 +85,10 @@ class GraphInterface:
         for date in dates:
             for i, tiker in enumerate(tikers):
                 y[i].append(self.points_for_balances[date][tiker])
-        
+
         y = np.array(y, dtype=float)
         data_x = np.array(range(0, len(y[0])), dtype=float)
-        
+
         plt.figure(figsize=(16, 6))
         plt.xlabel('Date')
         plt.xticks(rotation='vertical')
@@ -103,14 +101,15 @@ class GraphInterface:
         plt.savefig(buffer, format='jpg')
         buffer.seek(0)
         binary_data = buffer.read()
-        self.all_plots['balance']=(binary_data)
+        self.all_plots['balance'] = (binary_data)
 
     def save_plots(self):
         bucket = f"{self.idTask}-plots"
         if not self.client.path.exists(bucket):
             self.client.makedirs(bucket)
         for key, value in self.all_figures:
-            self.client.put_object( bucket, f'{key}.jpg',value,len(value))
+            self.client.put_object(bucket, f'{key}.jpg', value, len(value))
+
 
 def main():
     pass

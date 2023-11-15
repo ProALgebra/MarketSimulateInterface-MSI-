@@ -4,7 +4,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import async_sessionmaker
 from sqlalchemy.orm import sessionmaker
 
-from shared.dbs.postgres.models.ticket_history import TicketHistory
+from shared.dbs.postgres.models import TicketHistory
 
 
 class TickerHistoryRepository:

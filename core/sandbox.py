@@ -1,8 +1,7 @@
 import datetime
 from typing import Dict
+
 from dateutil.relativedelta import relativedelta
-
-
 
 
 class Ticker(str):
@@ -21,7 +20,7 @@ class Portfolio:
         self.cash = cash
 
     def add_share(self, share: Share, quantity: int) -> None:
-        if(self.cash < share.price * quantity):
+        if (self.cash < share.price * quantity):
             raise Exception("У меня нет столько денег")
         if share.ticker in self.shares:
             self.shares[share.ticker][1] += quantity
@@ -37,10 +36,12 @@ class Portfolio:
             raise Exception("у меня нет столько акций")
         self.shares[share.ticker][1] -= quantity
 
+
 class Broker:
     portfolio: Portfolio
 
     market: Dict[Ticker, Share]
+
     def __init__(self, dateStart: datetime, startValue, db):
         self.date = dateStart
         self.portfolio = Portfolio(startValue, {})
@@ -74,9 +75,10 @@ class Broker:
 
     def next_day(self):
         self.date = self.date + relativedelta(days=1)
-        while(self.date.weekday() > 5):
+        while (self.date.weekday() > 5):
             self.date = self.date + relativedelta(days=1)
         self.update_market()
+
 
 class MarketAlgorithm:
     def __init__(self, market, db):
@@ -85,6 +87,3 @@ class MarketAlgorithm:
 
     def run(self):
         pass
-
-
-

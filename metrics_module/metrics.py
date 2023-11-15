@@ -1,6 +1,6 @@
 # import database
-from graphics.graph import *
 from data import *
+from graphics.graph import *
 
 
 class database:
@@ -14,7 +14,6 @@ class database:
     @staticmethod
     def getTaskComission(task_id):
         return 0.03
-
 
 
 class Metrics:
@@ -41,7 +40,6 @@ class Metrics:
         self.create_comissions()
 
     def totalAtDay(self, data):
-
 
         portfel = self.logs[data].copy()
         free_money = portfel["FREE"]
@@ -115,18 +113,17 @@ class Metrics:
         comission = comission * self.comission_coefficient
         return comission
 
-
     def create_comissions(self):
         self.commissions = {}
         days = sorted(list(self.logs.keys()))
         for i in range(1, len(days)):
             cur_day = days[i]
-            prev_day = days[i-1]
+            prev_day = days[i - 1]
             self.commissions[days[i]] = abs(self._comission_in_day(cur_day, prev_day=prev_day))
 
 
 def main():
-    metrics = Metrics(logs=logs, task_id = 0)
+    metrics = Metrics(logs=logs, task_id=0)
 
     graph = GraphInterface(metrics, idTask=0)
 

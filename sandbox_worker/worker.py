@@ -1,23 +1,17 @@
+import zipfile
 from uuid import UUID
 
-import zipfile
-from graphics.graph import *
 import dramatiq
 from dramatiq import actor as dramatiq_actor
 from dramatiq.brokers.rabbitmq import RabbitmqBroker
 
+from core.marketSimulator import MarketSimulator
+from core.sandbox import Broker
+from graphics.graph import *
 from metrics_module.metrics import Metrics
 from sandbox_worker.settings import MQ_HOST
-
-from shared.dbs.minio.client import client as minio_client
-from shared.dbs.minio.plot_repository import PlotRepository
-from shared.dbs.minio.zip_repository import ZipRepository
-from shared.dbs.postgres.task_repository import TaskRepository
-
-from core.sandbox import Broker
-from core.marketSimulator import MarketSimulator
-from shared.dbs.postgres.ticker_repository import TickerHistoryRepository
-from shared.dbs.postgres.postgresql import sync_session
+from shared.dbs.minio import client as minio_client, PlotRepository, ZipRepository
+from shared.dbs.postgres import sync_session, TaskRepository, TickerHistoryRepository
 
 broker = RabbitmqBroker(host=MQ_HOST)
 dramatiq.set_broker(broker)
@@ -41,19 +35,18 @@ def run_sandbox(task_id: str):
     task_data = task_repo.get_task_by_id(task_id)
 
     ...  # запустить песок с параметрами из task_data
-    simulator = MarketSimulator(Broker = Broker(task_data.date_from,task_data.start_cash,TickerHistoryRepository(sync_session)), dateEnd=task_data.date_to, )
+    simulator = MarketSimulator(
+        Broker=Broker(task_data.date_from, task_data.start_cash, TickerHistoryRepository(sync_session)),
+        dateEnd=task_data.date_to, )
 
     sandbox_output = simulator.simulate()
-
-    
 
     ...  # обработать результат песка, сохранить
     metrics = Metrics(logs=sandbox_output, task_id=task_id)
 
-    
-    task_repo.update_task_result(task_id, {}) # < ---  результат сюда
+    task_repo.update_task_result(task_id, {})  # < ---  результат сюда
 
-    ... # нарисовать графики и положить в хранилище
+    ...  # нарисовать графики и положить в хранилище
 
     graph = GraphInterface(metrics=metrics, idTask=task_id, client=plot_repo)
 
@@ -72,8 +65,3 @@ def unzip_to_string(zip: bytes, filename: str) -> str:
     except FileNotFoundError as e:
         raise Exception("файл должен называться 'MarketAlgorythm.py'", e)
     return str(unzipped_bytes)
-
-
-
-
-

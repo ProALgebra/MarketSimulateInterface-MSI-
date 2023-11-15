@@ -1,12 +1,12 @@
 from datetime import datetime
 from uuid import UUID
 
-from .base_model import Base
-
 from sqlalchemy import (Integer, DateTime, Float)
-from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.dialects.postgresql import UUID as pg_UUID
 from sqlalchemy.dialects.postgresql.json import JSON
+from sqlalchemy.orm import Mapped, mapped_column
+
+from .base_model import Base
 
 
 class Tasks(Base):
@@ -49,4 +49,3 @@ class Tasks(Base):
         "start_cash",
         Float
     )
-

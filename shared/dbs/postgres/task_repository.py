@@ -1,7 +1,7 @@
 from datetime import datetime
 from uuid import UUID, uuid4
 
-from shared.dbs.postgres.models.task import Tasks
+from shared.dbs.postgres.models import Tasks
 
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import async_sessionmaker

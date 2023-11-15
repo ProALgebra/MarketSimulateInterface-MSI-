@@ -1,7 +1,7 @@
 from urllib.parse import urlunsplit
 
-from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 from sqlalchemy import create_engine
+from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 from sqlalchemy.orm import sessionmaker
 
 from shared import settings
@@ -17,7 +17,8 @@ def get_pg_uri(
         uri_query=settings.PG_URI_QUERY,
         sync=False
 ):
-    return urlunsplit(("postgresql" if sync else protocol, f'{username}:{password}@{host}:{port}', db, uri_query, str()))
+    return urlunsplit(
+        ("postgresql" if sync else protocol, f'{username}:{password}@{host}:{port}', db, uri_query, str()))
 
 
 async_engine = create_async_engine(get_pg_uri())

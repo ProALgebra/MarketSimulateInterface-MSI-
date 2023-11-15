@@ -1,15 +1,17 @@
-from shared.dbs.postgres.ticker_repository import TickerHistoryRepository
-from core.sandbox import Broker
-
 from dateutil.relativedelta import relativedelta
+
+from core.sandbox import Broker
+from shared.dbs.postgres import TickerHistoryRepository
+
+
 class DbBrokerService:
 
-    def __init__(self, broker: Broker, repository : TickerHistoryRepository):
+    def __init__(self, broker: Broker, repository: TickerHistoryRepository):
         self.broker = broker
         self.repository = repository
 
-    def getHistory(self,month: int):
-        _from = self.broker.get_date() - relativedelta(days = month*31)
+    def getHistory(self, month: int):
+        _from = self.broker.get_date() - relativedelta(days=month * 31)
         history = {}
         allTicketHistory = self.repository.get_tickers_in_range(_from, self.broker.get_date())
         date = allTicketHistory[0].day
@@ -29,4 +31,3 @@ class DbBrokerService:
             disc[allTicketHistory[j].ticket] = allTicketHistory[j].price
             i += 1
             date = allTicketHistory[j].day
-

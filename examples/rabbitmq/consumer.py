@@ -3,8 +3,7 @@ from datetime import datetime
 import dramatiq
 from dramatiq.brokers.rabbitmq import RabbitmqBroker
 
-from shared.dbs.postgres.ticker_repository import TickerHistoryRepository
-from shared.dbs.postgres.postgresql import sync_session
+from shared.dbs.postgres import TickerHistoryRepository, sync_session
 
 rabbitmq_broker = RabbitmqBroker(host="localhost")
 dramatiq.set_broker(rabbitmq_broker)

@@ -1,14 +1,15 @@
-from core.sandbox import Portfolio, MarketAlgorithm
 from core.dbBrokerService import DbBrokerService
-from shared.dbs.postgres.postgresql import sync_session
-from shared.dbs.postgres.ticker_repository import TickerHistoryRepository
+from core.sandbox import Portfolio, MarketAlgorithm
+from shared.dbs.postgres import TickerHistoryRepository
+from shared.dbs.postgres import sync_session
+
 
 class MarketSimulator:
     def __init__(self, Broker, dateEnd):
         self.Broker = Broker  # market(dateStart,startValue,db)
         self.portfolioHistoryList = {}
         self.dateEnd = dateEnd
-        self.db = DbBrokerService(DbBrokerService(self.Broker,TickerHistoryRepository(sync_session)))
+        self.db = DbBrokerService(DbBrokerService(self.Broker, TickerHistoryRepository(sync_session)))
 
     def dump_portfolio(self, portfolio: Portfolio):
         dump = {}
