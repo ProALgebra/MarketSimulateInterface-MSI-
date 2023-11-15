@@ -41,11 +41,14 @@ class Broker:
     portfolio: Portfolio
 
     market: Dict[Ticker, Share]
-    def __init__(self, dateStart, startValue, db):
+    def __init__(self, dateStart: datetime, startValue, db):
         self.date = dateStart
         self.portfolio = Portfolio(startValue, {})
         self.db = db
         self.update_market()
+
+    def get_date(self) -> datetime:
+        return self.date
 
     def sell(self, ticker: Ticker, quantity: int) -> None:
         share = self.market[ticker]

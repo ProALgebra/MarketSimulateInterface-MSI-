@@ -13,6 +13,12 @@ from shared.dbs.minio.zip_repository import ZipRepository
 from shared.dbs.postgres.postgresql import sync_session
 from shared.dbs.postgres.task_repository import TaskRepository
 
+from core.sandbox import Portfolio,Broker
+from core.marketSimulator import MarketSimulator
+from dbService import DbBrokerService
+from shared.dbs.postgres.ticker_repository import TickerHistoryRepository
+from shared.dbs.postgres.postgresql import sync_session
+
 broker = RabbitmqBroker(host=MQ_HOST)
 dramatiq.set_broker(MQ_HOST)
 
@@ -34,6 +40,7 @@ def run_sandbox(task_id: str):
     task_data = task_repo.get_task_by_id(task_id)
 
     ...  # запустить песок с параметрами из task_data
+    simulator = MarketSimulator(Broker = Broker(task_data.date_from,task_data.start_cash,TickerHistoryRepository(sync_session)), dateEnd=task_data.date_to, )
     pass
     pass
     pass
