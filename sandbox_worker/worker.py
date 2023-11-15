@@ -44,33 +44,27 @@ def run_sandbox(task_id: str):
 
     ...  # запустить песок с параметрами из task_data
     simulator = MarketSimulator(Broker = Broker(task_data.date_from,task_data.start_cash,TickerHistoryRepository(sync_session)), dateEnd=task_data.date_to, )
-    pass
-    pass
-    pass
+
+    sandbox_output = simulator.simulate()
+
+    
 
     ...  # обработать результат песка, сохранить
-    pass
-    pass
-    pass
+    metrics = Metrics(logs=sandbox_output, task_id=task_id)
+
+    
     task_repo.update_task_result(task_id, {}) # < ---  результат сюда
 
     ... # нарисовать графики и положить в хранилище
-def main():
-    metrics = Metrics(logs=logs, task_id = 0)
 
-    graph = GraphInterface(metrics, idTask=0, minio_client)
+    graph = GraphInterface(metrics=metrics, idTask=task_id, client=plot_repo)
 
     graph.plot_relatire_Total()
     graph.plot_balance()
     graph.plot_DPNL()
     graph.plot_Total()
     graph.plot_comissions()
-    graph.save_plots()
-
-
-if __name__ == "__main__":
-    main()
-
+    graph.save_plots
 
 def unzip_to_string(zip: bytes, filename: str) -> str:
     zip = zipfile.ZipFile(io.BytesIO(zip))
