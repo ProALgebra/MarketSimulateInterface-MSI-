@@ -41,6 +41,8 @@ class Metrics:
         self.create_comissions()
 
     def totalAtDay(self, data):
+
+
         portfel = self.logs[data].copy()
         free_money = portfel["FREE"]
         portfel.pop("FREE")
@@ -129,10 +131,10 @@ def main():
     graph = GraphInterface(metrics, idTask=0)
 
     graph.plot_relatire_Total()
-    # graph.plot_balance()
-    # graph.plot_DPNL()
-    # graph.plot_Total()
-    # graph.plot_comissions()
+    graph.plot_balance()
+    graph.plot_DPNL()
+    graph.plot_Total()
+    graph.plot_comissions()
 
 
 if __name__ == "__main__":
