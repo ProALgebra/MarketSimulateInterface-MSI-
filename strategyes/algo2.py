@@ -1,13 +1,13 @@
-import core.sandbox
-import datetime
 from typing import Dict
+
 from dateutil.relativedelta import relativedelta
-from core import dbBrokerService
+
 from core.dbBrokerService import DbBrokerService
 
 
 class Ticker(str):
     pass
+
 
 class Share:
     def init(self, ticker: Ticker, price: float):
@@ -21,7 +21,7 @@ class Portfolio:
         self.cash = cash
 
     def add_share(self, share: Share, quantity: int) -> None:
-        if(self.cash < share.price * quantity):
+        if self.cash < share.price * quantity:
             raise Exception("У меня нет столько денег")
         if share.ticker in self.shares:
             self.shares[share.ticker][1] += quantity
@@ -42,6 +42,7 @@ class Broker:
     portfolio: Portfolio
 
     market: Dict[Ticker, Share]
+
     def __init__(self, dateStart, startValue, db):
         self.date = dateStart
         self.portfolio = Portfolio(startValue, {})
@@ -72,12 +73,12 @@ class Broker:
 
     def next_day(self):
         self.date = self.date + relativedelta(days=1)
-        while(self.date.weekday() > 5):
+        while (self.date.weekday() > 5):
             self.date = self.date + relativedelta(days=1)
         self.update_market()
 
 
-def slippingAverage(db, amount_of_days:int, tikers : [Ticker]):
+def slippingAverage(db, amount_of_days: int, tikers: [Ticker]):
     needed_month = amount_of_days // 31 + 1
     interesting_dates_over = db.getHistory(needed_month)
     interesting_dates_map = sorted(list(set(interesting_dates_over)))[-amount_of_days:]
@@ -94,9 +95,8 @@ def slippingAverage(db, amount_of_days:int, tikers : [Ticker]):
     return ans
 
 
-
 class MarketAlgorithm:
-    def __init__(self, market : Broker, db : DbBrokerService):
+    def __init__(self, market: Broker, db: DbBrokerService):
         self.market = market
         self.db = db
 
@@ -112,14 +112,8 @@ class MarketAlgorithm:
                     self.market.buy(tiker, actions_cover_10_percent)
                 except:
                     print(f"При попытке купить {actions_cover_10_percent} "
-                                     f"{tiker} произошла ошибка: на балансе кошелька недостаточно средств")
+                          f"{tiker} произошла ошибка: на балансе кошелька недостаточно средств")
 
             else:
                 actions_cover_10_percent = round(self.market.get_portfolio().shares[tiker])
                 self.market.sell(tiker, actions_cover_10_percent)
-
-
-
-
-
-
