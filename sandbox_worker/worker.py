@@ -9,6 +9,7 @@ from dramatiq.brokers.rabbitmq import RabbitmqBroker
 from sandbox_worker.settings import MQ_HOST
 
 from shared.dbs.minio.client import client as minio_client
+from shared.dbs.minio.plot_repository import PlotRepository
 from shared.dbs.minio.zip_repository import ZipRepository
 from shared.dbs.postgres.postgresql import sync_session
 from shared.dbs.postgres.task_repository import TaskRepository
@@ -32,6 +33,7 @@ def run_sandbox(task_id: str):
 
     zip_repo = ZipRepository(minio_client)
     task_repo = TaskRepository(sync_session)
+    plot_repo = PlotRepository(minio_client)
 
     zip = zip_repo.get_zip_by_task_id(task_id)
 
