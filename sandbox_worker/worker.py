@@ -1,23 +1,20 @@
-import io
 from uuid import UUID
 
 import zipfile
 from graphics.graph import *
-from metrics_module import *
 import dramatiq
 from dramatiq.brokers.rabbitmq import RabbitmqBroker
 
+from metrics_module.metrics import Metrics
 from sandbox_worker.settings import MQ_HOST
 
 from shared.dbs.minio.client import client as minio_client
 from shared.dbs.minio.plot_repository import PlotRepository
 from shared.dbs.minio.zip_repository import ZipRepository
-from shared.dbs.postgres.postgresql import sync_session
 from shared.dbs.postgres.task_repository import TaskRepository
 
-from core.sandbox import Portfolio,Broker
+from core.sandbox import Broker
 from core.marketSimulator import MarketSimulator
-from dbService import DbBrokerService
 from shared.dbs.postgres.ticker_repository import TickerHistoryRepository
 from shared.dbs.postgres.postgresql import sync_session
 
@@ -65,6 +62,7 @@ def run_sandbox(task_id: str):
     graph.plot_Total()
     graph.plot_comissions()
     graph.save_plots
+
 
 def unzip_to_string(zip: bytes, filename: str) -> str:
     zip = zipfile.ZipFile(io.BytesIO(zip))

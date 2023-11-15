@@ -1,6 +1,13 @@
 version: "3.9"
 
 services:
+  sandbox-worker:
+    container_name: "sandbox-worker"
+    build:
+      context: .
+      dockerfile: sandbox_worker/Dockerfile
+    env_file: .env.dev
+
   database:
     container_name: "database"
     image: postgres:15-alpine
