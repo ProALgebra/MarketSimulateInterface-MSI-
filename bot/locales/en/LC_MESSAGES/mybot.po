@@ -19,90 +19,89 @@ msgstr ""
 "Generated-By: Babel 2.12.1\n"
 
 #: commands/users/account.py:28
-msgid " {}: {}"
-msgstr ""
+msgid "get_profile"
+msgstr "User data:"
 
 #: commands/users/account.py:37
 msgid "NO_HISTORY"
-msgstr ""
+msgstr "It seems you haven't tested any strategies yet🙄"
 
 #: commands/users/account.py:103
 msgid "ask_for_language"
-msgstr ""
+msgstr "What language do you prefer?"
 
 #: commands/users/account.py:118
 msgid "language_set"
-msgstr ""
+msgstr "Your language has been changed."
 
 #: commands/users/account.py:124
 msgid "READ_NAME"
-msgstr ""
+msgstr "Enter a new username."
 
 #: commands/users/account.py:136 commands/users/account.py:148
 msgid "new_name_accepted {first_name}"
-msgstr ""
+msgstr "New user name: {}"
 
 #: commands/users/cancel.py:32
 msgid "CANCEL_MESSAGE"
-msgstr ""
+msgstr "Status reset😉"
 
 #: commands/users/core.py:32
 msgid "START_CORE_MESSAGE"
-msgstr ""
+msgstr "To test your algorithm, select the beginning of the data interval:"
 
 #: commands/users/core.py:50
 msgid "END_DATA_CORE"
-msgstr ""
+msgstr "Now select the end of the data span:"
 
 #: commands/users/core.py:66
 msgid "COMMISSION"
-msgstr ""
+msgstr "Enter the commission:"
 
 #: commands/users/core.py:82
 msgid "INVALID_COMMISION"
-msgstr ""
+msgstr "Invalid data☹️, enter valid data."
 
 #: commands/users/core.py:88
 msgid "START_CASH"
-msgstr ""
+msgstr "Enter the initial capital💰✨"
 
 #: commands/users/core.py:104 commands/users/core.py:125
 msgid "INVALID_SOURCE"
-msgstr ""
+msgstr "This is not an archive!🤖🔄"
 
 #: commands/users/core.py:110
 msgid "SOURCE"
-msgstr ""
+msgstr "Send a zip archive with your strategy"
 
 #: commands/users/gpt.py:33
 msgid "GPT_ERROR"
-msgstr ""
+msgstr "I'm sorry, there was an error in processing the request.🚨"
 
 #: commands/users/start.py:33
 msgid "START_MESSAGE"
-msgstr ""
-
-#: keyboards/account.py:27
-msgid "REGISTRATIONS"
-msgstr ""
+msgstr "Greetings, trader-researcher! 🚀 Welcome to the world of trading opportunities! 📈🤖\
+Here you can test your trading algorithm and fine-tune it to perfection.\
+Is your algorithm ready to challenge the market? Let's dive into the world of finance together! 💹✨"
 
 #: keyboards/account.py:51
 msgid "task_infi"
-msgstr ""
+msgstr "Task: {} {} {}"
 
 #: keyboards/account.py:78
 msgid "keep_name"
-msgstr ""
+msgstr "Name saved successfully!🔄✨"
 
 #: middlewares/end_of_requests.py:36
 msgid "await_response_massage"
-msgstr ""
+msgstr "Expect me to work on your request. Thank you for your patience!⏳"
 
 #: middlewares/registrations.py:34
 msgid "REGISTRATIONS_MESSAGE"
-msgstr ""
+msgstr "To get started with our service, please register."
 
 #: middlewares/throttling.py:35
 msgid "THROTTLED_MESSAGE"
-msgstr ""
+msgstr "Attention! A large number of messages were detected in a short period of time. This may overload the system.\
+Please take this into account when sending messages and give us some time to process. Thank you for understanding! ⚠️🕒"
 
