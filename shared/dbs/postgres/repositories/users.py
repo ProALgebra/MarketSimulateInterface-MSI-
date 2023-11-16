@@ -7,6 +7,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from shared.dbs.postgres.models.users import Users
 from shared.dbs.postgres.repositories.abstract import Repository
 
+from datetime import datetime
+from uuid import UUID, uuid4
+
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy import select, update
+
+
 class UserRepo(Repository[Users]):
     def __init__(self, session: AsyncSession):
         super().__init__(type_model=Users, session=session)
@@ -41,3 +48,14 @@ class UserRepo(Repository[Users]):
         :return: True if the model exists, False otherwise
         """
         return (await self.get_by_tg_id(ident)) is not None
+
+
+class UserRepository:
+    def __init__(self, session: sessionmaker):
+        self.session = session
+
+    def get_user_by_id(self, user_id: UUID):
+        with self.session() as session:
+            stmt = select(Users).where(Users.telegram_id == user_id)
+            task = session.scalars(stmt)
+            return task.first()
