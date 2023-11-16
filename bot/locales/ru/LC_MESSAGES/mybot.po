@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-11-15 22:35+0300\n"
-"PO-Revision-Date: 2023-11-15 22:35+0300\n"
+"POT-Creation-Date: 2023-11-16 15:06+0300\n"
+"PO-Revision-Date: 2023-11-16 15:07+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
 "Language-Team: ru <LL@li.org>\n"
@@ -19,28 +19,80 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.12.1\n"
 
-#: commands/users/account.py:23 commands/users/account.py:29
+#: commands/users/account.py:28
+msgid " {}: {}"
+msgstr ""
+
+#: commands/users/account.py:37
+msgid "NO_HISTORY"
+msgstr ""
+
+#: commands/users/account.py:103
 msgid "ask_for_language"
 msgstr ""
 
-#: commands/users/account.py:43
+#: commands/users/account.py:118
 msgid "language_set"
 msgstr ""
 
-#: commands/users/cancel.py:27
+#: commands/users/account.py:124
+msgid "READ_NAME"
+msgstr ""
+
+#: commands/users/account.py:136 commands/users/account.py:148
+msgid "new_name_accepted {first_name}"
+msgstr ""
+
+#: commands/users/cancel.py:32
 msgid "CANCEL_MESSAGE"
 msgstr ""
 
-#: commands/users/core.py:26
+#: commands/users/core.py:32
 msgid "START_CORE_MESSAGE"
 msgstr ""
 
-#: commands/users/start.py:37
+#: commands/users/core.py:50
+msgid "END_DATA_CORE"
+msgstr ""
+
+#: commands/users/core.py:66
+msgid "COMMISSION"
+msgstr ""
+
+#: commands/users/core.py:82
+msgid "INVALID_COMMISION"
+msgstr ""
+
+#: commands/users/core.py:88
+msgid "START_CASH"
+msgstr ""
+
+#: commands/users/core.py:104 commands/users/core.py:125
+msgid "INVALID_SOURCE"
+msgstr ""
+
+#: commands/users/core.py:110
+msgid "SOURCE"
+msgstr ""
+
+#: commands/users/gpt.py:33
+msgid "GPT_ERROR"
+msgstr ""
+
+#: commands/users/start.py:33
 msgid "START_MESSAGE"
 msgstr ""
 
-#: keyboards/account.py:26
+#: keyboards/account.py:27
 msgid "REGISTRATIONS"
+msgstr ""
+
+#: keyboards/account.py:51
+msgid "task_infi"
+msgstr ""
+
+#: keyboards/account.py:78
+msgid "keep_name"
 msgstr ""
 
 #: middlewares/end_of_requests.py:36

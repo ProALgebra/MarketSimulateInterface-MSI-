@@ -9,9 +9,8 @@ from aiogram import types, Router, Bot
 from aiogram.enums import ChatType
 from aiogram.types import ContentType
 
-from bot.filters.chat_type_filter import ChatTypeFilter
+from filters.chat_type_filter import ChatTypeFilter
 from shared.settings import API_KEY
-from bot.commands.commandName import GPT_COMMAND
 from aiogram.utils.i18n import gettext as _
 
 gpt_router = Router()
