@@ -55,7 +55,11 @@ def run_sandbox(task_id: str):
     metrics = Metrics(logs=sandbox_output, task_id=task_id, dataBase=TickerHistoryRepository(sync_session))
 
     
-    task_repo.update_task_result(task_id, {}) # < ---  результат сюда
+    task_repo.update_task_result(task_id, {"tatal_at_first_day":metrics.total_at_first_day,
+                                           "tatal_at_last_day": metrics.total_at_last_day,
+                                           "total_commissions": metrics.total_commission,
+                                           "total_pnl": metrics.pnl
+                                           })
 
      # нарисовать графики и положить в хранилище
 
