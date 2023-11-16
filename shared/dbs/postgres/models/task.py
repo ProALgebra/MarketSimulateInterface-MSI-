@@ -5,7 +5,7 @@ from .base_model import Base
 
 from sqlalchemy import (Integer, DateTime, Float)
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy.dialects.postgresql import UUID as pg_UUID
+from sqlalchemy.dialects.postgresql import UUID as pg_UUID, BIGINT
 from sqlalchemy.dialects.postgresql.json import JSON
 
 
@@ -14,7 +14,7 @@ class Tasks(Base):
 
     user_id: Mapped[int] = mapped_column(
         'user_id',
-        Integer,
+        BIGINT,
         nullable=False
     )
 

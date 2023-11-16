@@ -29,7 +29,7 @@ def upgrade() -> None:
     )
     op.create_table('users',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
-    sa.Column('tg_id', sa.Integer(), nullable=False),
+    sa.Column('tg_id', sa.BIGINT(), nullable=False),
     sa.Column('name', sa.String(), nullable=False),
     sa.Column('language', sa.String(), nullable=False),
     sa.Column('commisions', sa.FLOAT(), nullable=False),

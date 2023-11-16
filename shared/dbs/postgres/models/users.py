@@ -2,6 +2,7 @@ from .base_model import Base
 
 from sqlalchemy import (Integer, String, FLOAT)
 from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.dialects.postgresql import BIGINT
 
 
 class Users(Base):
@@ -16,7 +17,7 @@ class Users(Base):
 
     telegram_id: Mapped[int] = mapped_column(
         'tg_id',
-        Integer,
+        BIGINT,
         unique=True
     )
 
