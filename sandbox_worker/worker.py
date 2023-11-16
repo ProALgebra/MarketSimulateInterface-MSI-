@@ -105,4 +105,5 @@ def send_tg_result(task_id: str):
 
     bf: list[InputMediaPhoto] = [InputMediaPhoto(media=BufferedInputFile(file=image, filename='def')) for image in
                                  images]
-    asyncio.run(bot.send_media_group(chat_id=task.user_id, media=bf))
+    asyncio.run(bot.send_media_group(chat_id=task.user_id,
+                                     media=bf))
