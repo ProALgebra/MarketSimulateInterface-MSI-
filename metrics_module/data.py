@@ -781,4 +781,5 @@ mass = {datetime.datetime(2021, 5, 18, 19, 23, 9, 560115): {'TMOS': 6.284},
         datetime.datetime(2023, 11, 9, 19, 23, 9, 560115): {'TMOS': 6.275},
         datetime.datetime(2023, 11, 10, 19, 23, 9, 560115): {'TMOS': 6.275},
         datetime.datetime(2023, 11, 11, 19, 23, 9, 560115): {'TMOS': 6.275},
-        datetime.datetime(2023, 11, 13, 19, 23, 9, 560115): {'TMOS': 6.275}}
+        datetime.datetime(2023, 11, 13, 19, 23, 9, 560115): {'TMOS': 6.275}
+}

@@ -1,12 +1,12 @@
-import io
 from uuid import UUID
 
 import zipfile
 from graphics.graph import *
-from metrics_module import *
 import dramatiq
+from dramatiq import actor as dramatiq_actor
 from dramatiq.brokers.rabbitmq import RabbitmqBroker
 
+from metrics_module.metrics import Metrics
 from sandbox_worker.settings import MQ_HOST
 
 from shared.dbs.minio.client import client as minio_client
@@ -24,7 +24,7 @@ from graphics.graph import *
 from core.dbBrokerService import DbBrokerService
 
 broker = RabbitmqBroker(host=MQ_HOST)
-dramatiq.set_broker(MQ_HOST)
+dramatiq.set_broker(broker)
 
 
 @dramatiq.actor()
@@ -67,6 +67,7 @@ def run_sandbox(task_id: str):
     graph.plot_Total()
     graph.plot_comissions()
     graph.save_plots()
+
 
 def unzip_to_string(zip: bytes, filename: str) -> str:
     zip = zipfile.ZipFile(io.BytesIO(zip))

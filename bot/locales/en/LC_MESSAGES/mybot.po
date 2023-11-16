@@ -1,0 +1,56 @@
+# English translations for PROJECT.
+# Copyright (C) 2023 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2023-11-15 22:35+0300\n"
+"PO-Revision-Date: 2023-11-15 22:35+0300\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.12.1\n"
+
+#: commands/users/account.py:23 commands/users/account.py:29
+msgid "ask_for_language"
+msgstr ""
+
+#: commands/users/account.py:43
+msgid "language_set"
+msgstr ""
+
+#: commands/users/cancel.py:27
+msgid "CANCEL_MESSAGE"
+msgstr ""
+
+#: commands/users/core.py:26
+msgid "START_CORE_MESSAGE"
+msgstr ""
+
+#: commands/users/start.py:37
+msgid "START_MESSAGE"
+msgstr ""
+
+#: keyboards/account.py:26
+msgid "REGISTRATIONS"
+msgstr ""
+
+#: middlewares/end_of_requests.py:36
+msgid "await_response_massage"
+msgstr ""
+
+#: middlewares/registrations.py:34
+msgid "REGISTRATIONS_MESSAGE"
+msgstr ""
+
+#: middlewares/throttling.py:35
+msgid "THROTTLED_MESSAGE"
+msgstr ""
+

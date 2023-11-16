@@ -5,7 +5,7 @@ from shared.dbs.postgres.models.task import Tasks
 
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import async_sessionmaker
-from sqlalchemy import select, update
+from sqlalchemy import select, update, delete
 
 
 class TaskRepository:
@@ -44,11 +44,23 @@ class AsyncTaskRepository:
     def __init__(self, session: async_sessionmaker):
         self.session = session
 
-    async def get_task_by_id(self, task_id: UUID):
+    async def get_tasks_by_user(self, user_id: int):
+        async with self.session() as session:
+            stmt = select(Tasks).where(Tasks.user_id == user_id)
+            tasks = await session.scalars(stmt)
+            return tasks.all()
+
+    async def get_task_by_id(self, task_id: UUID) -> Tasks:
         async with self.session() as session:
             stmt = select(Tasks).where(Tasks.task_id == task_id)
             task = await session.scalars(stmt)
             return task.first()
+
+    async def remove_task_by_id(self, task_id: UUID) -> None:
+        async with self.session() as session:
+            stmt = delete(Tasks).where(Tasks.task_id == task_id)
+            await session.execute(stmt)
+            await session.commit()
 
     async def insert_task(self, user_id: int, date_from: datetime, date_to: datetime, commission: float)  -> UUID:
         task_id = uuid4()

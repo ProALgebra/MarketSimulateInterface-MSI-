@@ -1,6 +1,8 @@
 import logging
 
 """ Costume exception for unhandled errors"""
+
+
 class SomethingWentWrong(Exception):
     def __init__(self, message):
         super().__init__(message)
