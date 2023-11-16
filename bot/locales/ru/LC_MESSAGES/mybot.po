@@ -23,6 +23,10 @@ msgstr ""
 msgid "get_profile"
 msgstr "Данные пользователя: {} : {}"
 
+#: commands/users/account.py:28
+msgid "GET_PROFILE_KB"
+msgstr "Данные пользователя📊"
+
 #: commands/users/account.py:37
 msgid "NO_HISTORY"
 msgstr "Кажется вы еще не протестировали ни одной стратегии🙄"
