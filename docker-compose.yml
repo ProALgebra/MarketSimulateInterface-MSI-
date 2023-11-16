@@ -21,6 +21,11 @@ services:
       dockerfile: sandbox_worker/Dockerfile
     env_file: .env.dev
 
+    depends_on:
+      - database
+      - mq
+      - file-storage
+
   database:
     container_name: "database"
     image: postgres:15-alpine
