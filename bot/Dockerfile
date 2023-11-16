@@ -5,7 +5,7 @@ RUN pip install -r /app/bot_app/requirements.txt
 
 FROM bot_base
 
-COPY ../bot_app /app/bot_app
+COPY ../bot /app/bot_app
 COPY ../shared /app/shared
 WORKDIR /app/bot_app
 RUN pybabel compile -d /app/bot_app/locales -D messages

@@ -2,6 +2,7 @@ from shared.dbs.postgres.ticker_repository import TickerHistoryRepository
 from core.sandbox import Broker
 
 from dateutil.relativedelta import relativedelta
+
 class DbBrokerService:
 
     def __init__(self, broker: Broker, repository : TickerHistoryRepository):

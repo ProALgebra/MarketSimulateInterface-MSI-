@@ -25,12 +25,6 @@ class Users(Base):
         String
     )
 
-    language: Mapped[str] = mapped_column(
-        'language',
-        String,
-        default='ru'
-    )
-
     commisions: Mapped[float] = mapped_column(
         'commisions',
         FLOAT,

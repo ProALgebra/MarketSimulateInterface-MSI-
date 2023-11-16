@@ -1,6 +1,8 @@
 import logging
 
 """ Costume exception for many requests"""
+
+
 class TooManyRequests(Exception):
     def __init__(self, message):
         super().__init__(message)
