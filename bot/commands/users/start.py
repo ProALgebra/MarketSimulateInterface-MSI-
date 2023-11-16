@@ -9,6 +9,7 @@ from bot.filters.chat_type_filter import ChatTypeFilter
 from shared.dbs.postgres.repositories.users import UserRepo
 from bot.commands.commandName import START_COMMAND
 from aiogram.utils.i18n import gettext as _
+import keyboards as kb
 
 user_start_router = Router()
 
@@ -30,4 +31,6 @@ async def cmd_start(message: Union[types.Message, types.CallbackQuery], user_rep
         await user_repo.new(telegram_id=message.from_user.id,
                             first_name=message.from_user.first_name)
 
-    await bot.send_message(text=_('START_MESSAGE'), chat_id=message.from_user.id)
+    await bot.send_message(text=_('START_MESSAGE'),
+                           chat_id=message.from_user.id,
+                           reply_markup=kb.main())
