@@ -10,7 +10,7 @@ from commands.commandName import (GET_PROFILE, GET_HISTORY, CORE_START, CHANGE_N
 def main(locale: str = None):
     keyboard = [
         [
-            (KeyboardButton(text=_(GET_PROFILE, locale=locale))),
+            (KeyboardButton(text=_('GET_PROFILE_KB', locale=locale))),
             (KeyboardButton(text=_(GET_HISTORY, locale=locale))),
         ],
         [
