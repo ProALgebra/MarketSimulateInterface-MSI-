@@ -12,14 +12,16 @@ from sandbox_worker.settings import MQ_HOST
 from shared.dbs.minio.client import client as minio_client
 from shared.dbs.minio.plot_repository import PlotRepository
 from shared.dbs.minio.zip_repository import ZipRepository
-from shared.dbs.postgres.postgresql import sync_session
 from shared.dbs.postgres.task_repository import TaskRepository
 
-from core.sandbox import Portfolio,Broker
-from core.marketSimulator import MarketSimulator
-from dbService import DbBrokerService
+from datetime import datetime
 from shared.dbs.postgres.ticker_repository import TickerHistoryRepository
 from shared.dbs.postgres.postgresql import sync_session
+from core.sandbox import Broker,Share,Ticker
+from core.marketSimulator import MarketSimulator
+from metrics_module.metrics import Metrics
+from graphics.graph import *
+from core.dbBrokerService import DbBrokerService
 
 broker = RabbitmqBroker(host=MQ_HOST)
 dramatiq.set_broker(MQ_HOST)
@@ -43,11 +45,11 @@ def run_sandbox(task_id: str):
     task_data = task_repo.get_task_by_id(task_id)
 
     ...  # запустить песок с параметрами из task_data
-    simulator = MarketSimulator(Broker = Broker(task_data.date_from,task_data.start_cash,TickerHistoryRepository(sync_session)), dateEnd=task_data.date_to, )
+    broker = Broker(datetime.combine(date(2023, 7, 14), time(7)), 400000, TickerHistoryRepository(sync_session))
 
+    algos = MarketAlgorithm(broker, DbBrokerService(broker, TickerHistoryRepository(sync_session)))
+    simulator = MarketSimulator(Broker=broker, dateEnd=datetime.combine(date(2023, 11, 15), time(7)), algorithm=algos)
     sandbox_output = simulator.simulate()
-
-    
 
     ...  # обработать результат песка, сохранить
     metrics = Metrics(logs=sandbox_output, task_id=task_id)
@@ -64,7 +66,7 @@ def run_sandbox(task_id: str):
     graph.plot_DPNL()
     graph.plot_Total()
     graph.plot_comissions()
-    graph.save_plots
+    graph.save_plots()
 
 def unzip_to_string(zip: bytes, filename: str) -> str:
     zip = zipfile.ZipFile(io.BytesIO(zip))

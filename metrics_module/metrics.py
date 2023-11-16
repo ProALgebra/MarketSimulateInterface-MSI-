@@ -1,7 +1,7 @@
 # import database
 from graphics.graph import *
 from data import *
-
+from shared.dbs.postgres.ticker_repository import TickerHistoryRepository
 
 class database:
     def __init__(self):
@@ -18,15 +18,16 @@ class database:
 
 
 class Metrics:
-    def __init__(self, logs, task_id):
+    def __init__(self, logs, task_id, dataBase :TickerHistoryRepository):
         self.totals = None
         self.DPNL = None
         self.relative_totals = None
         self.balance = None
         self.commissions = None
+        self.dbService = dataBase
 
         # self.all_tickers = database.getAllTickers()
-        self.all_tickers = ["TMOS"]
+        self.all_tickers = ["LKOH", "SBER", "ROSN", "TATN"]
         self.logs = logs
         self.createTotals()
         # print(self.totals)
@@ -37,7 +38,7 @@ class Metrics:
         self.createDPNL()
         # print(self.DPNL)
         # self.Sharp()
-        self.comission_coefficient = database.getTaskComission(task_id)
+        self.comission_coefficient = 0.004
         self.create_comissions()
 
     def totalAtDay(self, data):
@@ -47,10 +48,15 @@ class Metrics:
         free_money = portfel["FREE"]
         portfel.pop("FREE")
         ticker_ndarray = list(portfel.keys())
-        ticker_to_absolute_costs = database.getTicketsPricesAtDay(ticker_ndarray, data)
+        ticker_to_absolute_costs = self.dbService.get_tickers_by_day(data)
         money_in_tickers = 0
         for ticker in ticker_ndarray:
-            money_in_tickers += portfel[ticker] * ticker_to_absolute_costs[ticker]
+            cost = 0
+            for i in ticker_to_absolute_costs:
+                if(i.ticket == ticker):
+                    cost = i.price
+                    break
+            money_in_tickers += portfel[ticker] * cost
         total = free_money + money_in_tickers
         return total
 
@@ -81,10 +87,15 @@ class Metrics:
         for day in self.logs:
             day_balance = {}
             day_tickers = self.all_tickers
-            ticker_to_absolute_costs = database.getTicketsPricesAtDay(ticker_ndarray, day)
+            ticker_to_absolute_costs = self.dbService.get_tickers_by_day(day)
             for ticker in day_tickers:
                 if ticker in portfel[day]:
-                    money_in_that_ticker = portfel[day][ticker] * ticker_to_absolute_costs[ticker]
+                    cost = 0
+                    for i in ticker_to_absolute_costs:
+                        if (i.ticket == ticker):
+                            cost = i.price
+                            break
+                    money_in_that_ticker = portfel[day][ticker] * cost
                 else:
                     money_in_that_ticker = 0
                 day_balance[ticker] = money_in_that_ticker / self.totalAtDay(day)
@@ -99,10 +110,15 @@ class Metrics:
     def _comission_in_day(self, day, prev_day):
         self.logs[day].pop("FREE")
         tikers_on_current = self.logs[day].keys()
-        ticker_to_absolute_costs = database.getTicketsPricesAtDay(tikers_on_current, day)
+        ticker_to_absolute_costs = self.dbService.get_tickers_by_day( day)
         comission = 0
         for tiker in tikers_on_current:
-            tiker_cost = ticker_to_absolute_costs[tiker]
+            cost = 0
+            for i in ticker_to_absolute_costs:
+                if (i.ticket == tiker):
+                    cost = i.price
+                    break
+            tiker_cost = cost
             tiker_count_current = self.logs[day][tiker]
             if tiker in self.logs[day]:
                 tiker_count_prev = self.logs[prev_day][tiker]
@@ -110,6 +126,7 @@ class Metrics:
                 tiker_count_prev = 0
             tiker_diff = tiker_count_current - tiker_count_prev
             diff_cost = tiker_diff * tiker_cost
+            print(diff_cost)
             comission += diff_cost
 
         comission = comission * self.comission_coefficient

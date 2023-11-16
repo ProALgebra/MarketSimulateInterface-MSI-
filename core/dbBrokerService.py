@@ -1,5 +1,5 @@
 from shared.dbs.postgres.ticker_repository import TickerHistoryRepository
-from sandbox import Broker
+from core.sandbox import Broker,Share
 
 from dateutil.relativedelta import relativedelta
 class DbBrokerService:
@@ -16,17 +16,15 @@ class DbBrokerService:
         disc = {}
         i = 0
         for j in allTicketHistory:
-            if (date != allTicketHistory[j].day and i != 4):
-                # print(str(date))
+            if (date != j.day and i != 4):
                 disc = {}
                 i = 0
 
             if (i == 4):
                 i = 0
-                # print(disc)
                 history[date] = disc
                 disc = {}
-            disc[allTicketHistory[j].ticket] = allTicketHistory[j].price
+            disc[j.ticket] = Share(j.ticket,j.price)
             i += 1
-            date = allTicketHistory[j].day
-
+            date = j.day
+        return history

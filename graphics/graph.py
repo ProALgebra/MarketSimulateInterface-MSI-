@@ -8,6 +8,7 @@ class GraphInterface:
         self.points_for_total = metrics.totals
         self.points_for_relative_totals = metrics.relative_totals
         self.points_for_balances = metrics.balance
+        self.points_for_commissions = metrics.commissions
         self.points_for_DPNL = metrics.DPNL
         self.idTask = idTask
         self.all_plots = {}
@@ -29,6 +30,7 @@ class GraphInterface:
         buffer.seek(0)
         binary_data = buffer.read()
         self.all_plots['Total']=(binary_data)
+        plt.show()
     
     
     def plot_DPNL(self):
@@ -46,6 +48,7 @@ class GraphInterface:
         buffer.seek(0)
         binary_data = buffer.read()
         self.all_plots['DPNL']=(binary_data)
+        plt.show()
     
     def plot_relatire_Total(self):
         data_x = list(self.points_for_relative_totals.keys())
@@ -62,11 +65,12 @@ class GraphInterface:
         buffer.seek(0)
         binary_data = buffer.read()
         self.all_plots['relatire_Total']=(binary_data)
+        plt.show()
 
     
     def plot_comissions(self):
-        data_x = list(self.points_for_relative_totals.keys())
-        data_y = list(self.points_for_relative_totals.values())
+        data_x = list(self.points_for_commissions.keys())
+        data_y = list(self.points_for_commissions.values())
         plt.plot(data_x, data_y, label='comissions', color='red')
         plt.xlabel('Date')
         plt.xticks(rotation='vertical')
@@ -79,6 +83,7 @@ class GraphInterface:
         buffer.seek(0)
         binary_data = buffer.read()
         self.all_plots['comissions']=(binary_data)
+        plt.show()
     
     def plot_balance(self):
         dates = sorted(list(self.points_for_balances))
@@ -104,6 +109,7 @@ class GraphInterface:
         buffer.seek(0)
         binary_data = buffer.read()
         self.all_plots['balance']=(binary_data)
+        plt.show()
 
     def save_plots(self):
         bucket = f"{self.idTask}-plots"

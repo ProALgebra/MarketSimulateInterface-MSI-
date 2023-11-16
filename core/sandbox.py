@@ -1,7 +1,7 @@
 import datetime
 from typing import Dict
 from dateutil.relativedelta import relativedelta
-from core import dbBrokerService
+from shared.dbs.postgres.ticker_repository import TickerHistoryRepository
 
 
 
@@ -11,41 +11,44 @@ class Ticker(str):
 
 
 class Share:
-    def init(self, ticker: Ticker, price: float):
+    def __init__(self, ticker: Ticker, price: float):
         self.ticker = ticker
         self.price = price
 
 
 class Portfolio:
-    def __init__(self, cash: float, shares: Dict[Ticker, (Share, int)]):
+    def __init__(self, cash: float, shares: Dict[Ticker, int]):
         self.shares = shares
         self.cash = cash
 
     def add_share(self, share: Share, quantity: int) -> None:
         if(self.cash < share.price * quantity):
             raise Exception("У меня нет столько денег")
+        self.cash = self.cash - share.price * quantity
         if share.ticker in self.shares:
-            self.shares[share.ticker][1] += quantity
+            self.shares[share.ticker] += quantity
         else:
-            self.shares[share.ticker] = (share, quantity)
+            self.shares[share.ticker] = quantity
 
     def remove_share(self, share: Share, quantity: int) -> None:
         if share.ticker not in self.shares:
             raise Exception("у меня нет такой акции")
 
-        current_share_quantity = self.shares[share.ticker][1]
+        current_share_quantity = self.shares[share.ticker]
         if quantity > current_share_quantity:
             raise Exception("у меня нет столько акций")
-        self.shares[share.ticker][1] -= quantity
+        self.cash = self.cash + share.price * quantity
+        self.shares[share.ticker] -= quantity
 
 class Broker:
     portfolio: Portfolio
 
     market: Dict[Ticker, Share]
-    def __init__(self, dateStart: datetime, startValue, db):
+    def __init__(self, dateStart: datetime, startValue, db: TickerHistoryRepository):
         self.date = dateStart
         self.portfolio = Portfolio(startValue, {})
         self.db = db
+        self.market = {}
         self.update_market()
 
     def get_date(self) -> datetime:
@@ -60,9 +63,10 @@ class Broker:
         self.portfolio.add_share(share, quantity)
 
     def update_market(self) -> None:
-        data = self.db.getTicketsPrice(self.date)
-        for ticker, share in data:
-            self.market[ticker].price = share.price
+        data = self.db.get_tickers_by_day(self.date)
+
+        for i in data:
+            self.market[i.ticket] = Share(i.ticket,i.price)
 
     def get_all_shares(self) -> Dict[Ticker, Share]:
         return self.market
