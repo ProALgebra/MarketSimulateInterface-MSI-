@@ -4,7 +4,7 @@ from metrics_module.data import *
 from shared.dbs.postgres.repositories.ticker import TickerHistoryRepository
 
 class Metrics:
-    def __init__(self, logs, task_id, dataBase :TickerHistoryRepository):
+    def __init__(self, logs, task_id, dataBase :TickerHistoryRepository, ):
         self.totals = None
         self.DPNL = None
         self.relative_totals = None
@@ -28,9 +28,9 @@ class Metrics:
         self.make_single_params()
 
     def make_single_params(self):
-        self.total_at_first_day = self.totalAtDay(min(self.logs.keys))
-        self.total_at_last_day = self.totalAtDay(max(self.logs.keys))
-        self.total_commission = sum(self.commissions.values)
+        self.total_at_first_day = self.totalAtDay(min(self.logs.keys()))
+        self.total_at_last_day = self.totalAtDay(max(self.logs.keys()))
+        self.total_commission = sum(self.commissions.values())
         self.pnl = (self.total_at_last_day - self.total_at_first_day) / self.total_at_first_day
 
 
@@ -60,7 +60,7 @@ class Metrics:
 
     def createDPNL(self):
         self.DPNL = {}
-        days = sorted(list(self.logs.keys()))[1:]
+        days = sorted(list(self.logs.copy().keys()))[1:]
         for i in range(1, len(self.logs) - 1):
             self.DPNL[days[i]] = (self.totalAtDay(days[i]) - self.totalAtDay(days[i - 1])) / self.totalAtDay(
                 days[i - 1])
@@ -74,8 +74,8 @@ class Metrics:
 
     def balancee(self):
         self.balance = {}
-        portfel = self.logs
-        for day in self.logs:
+        portfel = self.logs.copy()
+        for day in portfel:
             day_balance = {}
             day_tickers = self.all_tickers
             ticker_to_absolute_costs = self.dbService.get_tickers_by_day(day)
@@ -99,8 +99,10 @@ class Metrics:
         pass
 
     def _comission_in_day(self, day, prev_day):
-        self.logs[day].pop("FREE")
-        tikers_on_current = self.logs[day].keys()
+        from copy import deepcopy
+        logs = deepcopy(self.logs)
+        logs[day].pop("FREE")
+        tikers_on_current = logs[day].keys()
         ticker_to_absolute_costs = self.dbService.get_tickers_by_day( day)
         comission = 0
         for tiker in tikers_on_current:
@@ -110,16 +112,15 @@ class Metrics:
                     cost = i.price
                     break
             tiker_cost = cost
-            tiker_count_current = self.logs[day][tiker]
-            if tiker in self.logs[day]:
-                tiker_count_prev = self.logs[prev_day][tiker]
+            tiker_count_current = logs[day][tiker]
+            if tiker in logs[day]:
+                tiker_count_prev = logs[prev_day][tiker]
             else:
                 tiker_count_prev = 0
             tiker_diff = tiker_count_current - tiker_count_prev
             diff_cost = tiker_diff * tiker_cost
             comission += diff_cost
-
-        comission = comission * self.comission_coefficient
+        comission = comission * self.commission_coefficient
         return comission
 
 
