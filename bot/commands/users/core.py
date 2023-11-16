@@ -155,7 +155,7 @@ async def set_source(message: types.Message,
     zip_repo: ZipRepository = ZipRepository(client=client)
     zip_repo.put_zip(uuid4, file_in_io, file.file_size)
 
-    await run_sandbox.send(str(uuid4))
+    run_sandbox.send(str(uuid4))
 
     await message.reply(_('CORE_GET_START_CALCULATE'))
 
