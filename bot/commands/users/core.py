@@ -54,13 +54,18 @@ async def set_start_date(callback_query: CallbackQuery,
     if not select:
         return
 
-    def convert_to_date_format(date: datetime) -> datetime:
-        date.hour = 7
-        date.minute = 0
-        date.second = 0
-        date.microsecond = 0
+    def convert_to_date_format(date: datetime) -> str:
+        copy_date = datetime(
+            year=date.year,
+            month=date.month,
+            day=date.day,
+            hour=7,
+            minute = 0,
+            second = 0,
+            microsecond = 0,
+        )
 
-        return date
+        return str(copy_date)
 
     await state.update_data({'date_start': convert_to_date_format(date_start)})
     await state.set_state(CoreSetup.data_end)
@@ -80,13 +85,18 @@ async def set_end_date(callback_query: CallbackQuery,
     if not select:
         return
 
-    def convert_to_date_format(date: datetime) -> datetime:
-        date.hour = 7
-        date.minute = 0
-        date.second = 0
-        date.microsecond = 0
+    def convert_to_date_format(date: datetime) -> str:
+        copy_date = datetime(
+            year=date.year,
+            month=date.month,
+            day=date.day,
+            hour=7,
+            minute = 0,
+            second = 0,
+            microsecond = 0,
+        )
 
-        return date
+        return str(copy_date)
 
     await state.update_data({'date_end': convert_to_date_format(date_end)})
     await state.set_state(CoreSetup.commission)
@@ -155,8 +165,8 @@ async def set_source(message: types.Message,
     start_cash: float = data['start_cash']
 
     uuid4: UUID = await task_repo.insert_task(user_id=int(message.from_user.id),
-                                              date_from=datetime.strptime(date_start, "%Y.%m.%d %H:%M:%S"),
-                                              date_to=datetime.strptime(date_end, "%Y.%m.%d %H:%M:%S"),
+                                              date_from=datetime.strptime(date_start, "%Y-%m-%d %H:%M:%S"),
+                                              date_to=datetime.strptime(date_end, "%Y-%m-%d %H:%M:%S"),
                                               commission=float(commission),
                                               start_cash=float(start_cash))
 
@@ -166,6 +176,8 @@ async def set_source(message: types.Message,
     await run_sandbox.send(str(uuid4))
 
     await message.reply(_('CORE_GET_START_CALCULATE'))
+
+    await state.set_state()
 
 @core_router.message(CoreSetup.source)
 async def set_source(message: types.Message):

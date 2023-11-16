@@ -48,7 +48,7 @@ def tasks(tasks: list[Tasks], limit: int = 3, offset: int = 0):
         keyboard.append(
             [
                 InlineKeyboardButton(
-                    text=_('task_infi') + ' ' + str(task.date_to) + '-' + str(task.date_from) + '-' + str(task.start_cash),
+                    text=_('task_infi').format(str(task.date_to), str(task.date_from), str(task.start_cash)),
                     callback_data=TasksData(
                         task_id=task.task_id
                     ).pack(),

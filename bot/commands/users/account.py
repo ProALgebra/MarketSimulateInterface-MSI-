@@ -25,7 +25,7 @@ account_router = Router()
 @account_router.message(F.text==__(GET_PROFILE), flags={"chat_action": "typing"})
 async def get_profile(message: types.Message, user_repo: UserRepo):
     user: Users = await user_repo.get_by_tg_id(message.from_user.id)
-    profile: str = _(GET_PROFILE + " {}: {}").format(user.name, user.commisions)
+    profile: str = _(GET_PROFILE).format(user.name, user.commisions)
     await message.answer(text=profile)
 
 @account_router.message(Command(GET_HISTORY), flags={"chat_action": "typing"})
@@ -134,7 +134,7 @@ async def keep_name(message: types.Message, state: FSMContext, user_repo: UserRe
 
     first_name = message.from_user.first_name
     text = _('new_name_accepted {first_name}')
-    text = text.format(first_name=first_name)
+    text = text.format(first_name)
 
     await state.set_state()
     await message.answer(text,
@@ -146,7 +146,7 @@ async def read_name(message: types.Message, state: FSMContext, user_repo: UserRe
     user.name = message.text
 
     text = _('new_name_accepted {first_name}')
-    text = text.format(first_name=message.text)
+    text = text.format(message.text)
 
     await state.set_state()
     await message.answer(text=text,
