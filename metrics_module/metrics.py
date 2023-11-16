@@ -3,20 +3,6 @@ from graphics.graph import *
 from data import *
 from shared.dbs.postgres.repositories.ticker import TickerHistoryRepository
 
-class database:
-    def __init__(self):
-        self.logs = logs
-
-    @staticmethod
-    def getTicketsPricesAtDay(ticket, data):
-        return mass[data]
-
-    @staticmethod
-    def getTaskComission(task_id):
-        return 0.03
-
-
-
 class Metrics:
     def __init__(self, logs, task_id, dataBase :TickerHistoryRepository):
         self.totals = None
@@ -24,26 +10,32 @@ class Metrics:
         self.relative_totals = None
         self.balance = None
         self.commissions = None
+        self.total_at_first_day = None
+        self.total_at_last_day = None
+        self.total_commission = None
+        self.pnl = None
+
         self.dbService = dataBase
 
-        # self.all_tickers = database.getAllTickers()
         self.all_tickers = ["LKOH", "SBER", "ROSN", "TATN"]
         self.logs = logs
         self.createTotals()
-        # print(self.totals)
         self.relativeTotal()
-        # print(self.relative_totals)
         self.balancee()
-        # print(self.balance)
         self.createDPNL()
-        # print(self.DPNL)
-        # self.Sharp()
-        self.comission_coefficient = 0.004
+        self.commission_coefficient = 0.004
         self.create_comissions()
+        self.make_single_params()
+
+    def make_single_params(self):
+        self.total_at_first_day = self.totalAtDay(min(self.logs.keys))
+        self.total_at_last_day = self.totalAtDay(max(self.logs.keys))
+        self.total_commission = sum(self.commissions.values)
+        self.pnl = (self.total_at_last_day - self.total_at_first_day) / self.total_at_first_day
+
+
 
     def totalAtDay(self, data):
-
-
         portfel = self.logs[data].copy()
         free_money = portfel["FREE"]
         portfel.pop("FREE")
@@ -83,7 +75,6 @@ class Metrics:
     def balancee(self):
         self.balance = {}
         portfel = self.logs
-        ticker_ndarray = list(portfel.values())
         for day in self.logs:
             day_balance = {}
             day_tickers = self.all_tickers
