@@ -44,20 +44,20 @@ def run_sandbox(task_id: str):
 
     task_data = task_repo.get_task_by_id(task_id)
 
-    ...  # запустить песок с параметрами из task_data
-    broker = Broker(datetime.combine(date(2023, 7, 14), time(7)), 400000, TickerHistoryRepository(sync_session))
+      # запустить песок с параметрами из task_data
+    broker = Broker(task_data.date_from, 400000, TickerHistoryRepository(sync_session))
 
     algos = MarketAlgorithm(broker, DbBrokerService(broker, TickerHistoryRepository(sync_session)))
-    simulator = MarketSimulator(Broker=broker, dateEnd=datetime.combine(date(2023, 11, 15), time(7)), algorithm=algos)
+    simulator = MarketSimulator(Broker=broker, dateEnd=task_data.date_to, algorithm=algos)
     sandbox_output = simulator.simulate()
 
-    ...  # обработать результат песка, сохранить
-    metrics = Metrics(logs=sandbox_output, task_id=task_id)
+      # обработать результат песка, сохранить
+    metrics = Metrics(logs=sandbox_output, task_id=task_id, dataBase=TickerHistoryRepository(sync_session))
 
     
     task_repo.update_task_result(task_id, {}) # < ---  результат сюда
 
-    ... # нарисовать графики и положить в хранилище
+     # нарисовать графики и положить в хранилище
 
     graph = GraphInterface(metrics=metrics, idTask=task_id, client=plot_repo)
 
