@@ -7,8 +7,8 @@ from aiogram.filters import Command, CommandObject
 
 from bot.filters.chat_type_filter import ChatTypeFilter
 from shared.dbs.postgres.repositories.users import UserRepo
-from bot.commands.commandName import START_COMMAND
-from aiogram.utils.i18n import gettext as _
+from bot.commands.commandName import START_COMMAND, SET_RU_LANGUAGE
+from aiogram.utils.i18n import gettext as _, lazy_gettext as __
 import keyboards as kb
 
 user_start_router = Router()
@@ -19,7 +19,7 @@ user_start_router = Router()
     flags={"chat_action": "typing", "registrations": False})
 @user_start_router.callback_query(
     ChatTypeFilter(chat_type=[ChatType.PRIVATE]),
-    F.text==START_COMMAND,
+    F.text==__('REGISTRATIONS'),
     flags={"chat_action": "typing", "registrations": False})
 async def cmd_start(message: Union[types.Message, types.CallbackQuery], user_repo: UserRepo, bot: Bot):
     """
