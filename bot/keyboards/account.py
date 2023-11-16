@@ -10,7 +10,7 @@ from commands.commandName import (GET_PROFILE, GET_HISTORY, CORE_START, CHANGE_N
 def main(locale: str = None):
     keyboard = [
         [
-            (KeyboardButton(text=_(GET_PROFILE, locale=locale))),
+            (KeyboardButton(text=_('GET_PROFILE_KB', locale=locale))),
             (KeyboardButton(text=_(GET_HISTORY, locale=locale))),
         ],
         [
@@ -48,7 +48,7 @@ def tasks(tasks: list[Tasks], limit: int = 3, offset: int = 0):
         keyboard.append(
             [
                 InlineKeyboardButton(
-                    text=_('task_infi') + ' ' + str(task.date_to) + '-' + str(task.date_from) + '-' + str(task.start_cash),
+                    text=_('task_infi').format(str(task.date_to), str(task.date_from), str(task.start_cash)),
                     callback_data=TasksData(
                         task_id=task.task_id
                     ).pack(),

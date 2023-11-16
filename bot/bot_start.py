@@ -24,8 +24,7 @@ async def start_bot():
 
     logger.info("Starting bot")
 
-    bot = Bot(token=conf.bot.token,
-              parse_mode=ParseMode.HTML)
+    bot = Bot(token=conf.bot.token, parse_mode=ParseMode.HTML)
     cache: Cache = Cache()
 
     storage = get_redis_storage(redis=cache.fsm_client.redis_client)
