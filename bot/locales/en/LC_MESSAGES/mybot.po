@@ -22,6 +22,10 @@ msgstr ""
 msgid "get_profile"
 msgstr "User data: {} : {}"
 
+#: commands/users/account.py:28
+msgid "GET_PROFILE_KB"
+msgstr "User data📊"
+
 #: commands/users/account.py:37
 msgid "NO_HISTORY"
 msgstr "It seems you haven't tested any strategies yet🙄"
@@ -111,16 +115,16 @@ Please take this into account when sending messages and give us some time to pro
 
 #: middlewares/registrations.py:34
 msgid "get_history"
-msgstr "Get request history"
+msgstr "Get request history📜"
 
 #: middlewares/registrations.py:34
 msgid "change_name"
-msgstr "Change user name"
+msgstr "Change user name🔄"
 
 #: middlewares/registrations.py:34
 msgid "change_language"
-msgstr "Change the language"
+msgstr "Change the language🌐"
 
 #: middlewares/registrations.py:34
 msgid "core_start"
-msgstr "Test the algorithm"
+msgstr "Test the algorithm🧪"
