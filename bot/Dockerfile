@@ -1,5 +1,5 @@
 FROM python:3.11-slim-buster as bot_base
-COPY bot_app/requirements.txt /app/bot_app/requirements.txt
+COPY bot/requirements.txt /app/bot/requirements.txt
 COPY shared/requirements.txt /app/shared/requirements.txt
 RUN pip install -r /app/bot_app/requirements.txt
 
