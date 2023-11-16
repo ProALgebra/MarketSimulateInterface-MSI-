@@ -1,12 +1,7 @@
-FROM python:3.11-slim-buster as bot_base
-COPY bot/requirements.txt /app/bot/requirements.txt
-COPY shared/requirements.txt /app/shared/requirements.txt
-RUN pip install -r /app/bot_app/requirements.txt
-
-FROM bot_base
-
-COPY ../bot /app/bot_app
-COPY ../shared /app/shared
-WORKDIR /app/bot_app
-RUN pybabel compile -d /app/bot_app/locales -D messages
+FROM python:3.10 as bot_base
+COPY . .
+RUN pip install -r bot/requirements.txt
+RUN pip install -r sandbox_worker/requirements.txt
+RUN pybabel compile -d bot/locales -D mybot
+CMD ["python3", "bot/bot_start.py"]
 ENV PYTHONPATH "${PYTHONPATH}:/app"
