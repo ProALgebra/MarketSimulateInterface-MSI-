@@ -76,7 +76,7 @@ class AsyncTaskRepository:
                 )
             )
             await session.commit()
-            return uuid4()
+            return task_id
 
     async def update_task_result(self, task_id: UUID, result: dict):
         async with self.session() as session:
