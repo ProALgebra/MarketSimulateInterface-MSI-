@@ -1,6 +1,6 @@
 # import database
 from graphics.graph import *
-from data import *
+from metrics_module.data import *
 from shared.dbs.postgres.repositories.ticker import TickerHistoryRepository
 
 class Metrics:

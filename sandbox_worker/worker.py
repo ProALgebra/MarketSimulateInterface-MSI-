@@ -12,10 +12,10 @@ from sandbox_worker.settings import MQ_HOST
 from shared.dbs.minio.client import client as minio_client
 from shared.dbs.minio.plot_repository import PlotRepository
 from shared.dbs.minio.zip_repository import ZipRepository
-from shared.dbs.postgres.task_repository import TaskRepository
+from shared.dbs.postgres.repositories.task import TaskRepository
 
 from datetime import datetime
-from shared.dbs.postgres.ticker_repository import TickerHistoryRepository
+from shared.dbs.postgres.repositories.ticker import TickerHistoryRepository
 from shared.dbs.postgres.postgresql import sync_session
 from core.sandbox import Broker,Share,Ticker
 from core.marketSimulator import MarketSimulator
