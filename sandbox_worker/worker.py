@@ -46,31 +46,42 @@ def run_sandbox(task_id: str):
 
       # запустить песок с параметрами из task_data
     broker = Broker(task_data.date_from, 400000, TickerHistoryRepository(sync_session))
+    try:
+        exec(client_source_code)
+        algos = MarketAlgorithm(broker, DbBrokerService(broker, TickerHistoryRepository(sync_session)))
+        simulator = MarketSimulator(Broker=broker, dateEnd=task_data.date_to, algorithm=algos)
+        sandbox_output = simulator.simulate()
 
-    algos = MarketAlgorithm(broker, DbBrokerService(broker, TickerHistoryRepository(sync_session)))
-    simulator = MarketSimulator(Broker=broker, dateEnd=task_data.date_to, algorithm=algos)
-    sandbox_output = simulator.simulate()
+          # обработать результат песка, сохранить
+        metrics = Metrics(logs=sandbox_output, task_id=task_id, dataBase=TickerHistoryRepository(sync_session))
 
-      # обработать результат песка, сохранить
-    metrics = Metrics(logs=sandbox_output, task_id=task_id, dataBase=TickerHistoryRepository(sync_session))
 
-    
-    task_repo.update_task_result(task_id, {"tatal_at_first_day":metrics.total_at_first_day,
-                                           "tatal_at_last_day": metrics.total_at_last_day,
-                                           "total_commissions": metrics.total_commission,
-                                           "total_pnl": metrics.pnl
-                                           })
+        task_repo.update_task_result(task_id, {"tatal_at_first_day":metrics.total_at_first_day,
+                                               "tatal_at_last_day": metrics.total_at_last_day,
+                                               "total_commissions": metrics.total_commission,
+                                               "total_pnl": metrics.pnl,
+                                               "return_message": 0
+                                               })
 
-     # нарисовать графики и положить в хранилище
+         # нарисовать графики и положить в хранилище
 
-    graph = GraphInterface(metrics=metrics, idTask=task_id, client=plot_repo)
+        graph = GraphInterface(metrics=metrics, idTask=task_id, client=plot_repo)
 
-    graph.plot_relatire_Total()
-    graph.plot_balance()
-    graph.plot_DPNL()
-    graph.plot_Total()
-    graph.plot_comissions()
-    graph.save_plots()
+        graph.plot_relatire_Total()
+        graph.plot_balance()
+        graph.plot_DPNL()
+        graph.plot_Total()
+        graph.plot_comissions()
+        graph.save_plots()
+    except Exception as e:
+        task_repo.update_task_result(task_id, {"tatal_at_first_day": None,
+                                               "tatal_at_last_day": None,
+                                               "total_commissions": None,
+                                               "total_pnl": None,
+                                               "return_message": str(e)
+                                               })
+
+
 
 
 def unzip_to_string(zip: bytes, filename: str) -> str:
