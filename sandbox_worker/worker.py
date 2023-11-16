@@ -47,7 +47,7 @@ def run_sandbox(task_id: str):
       # запустить песок с параметрами из task_data
     broker = Broker(task_data.date_from, 400000, TickerHistoryRepository(sync_session))
     try:
-        exec(client_source_code)
+        exec(client_source_code, globals())
         algos = MarketAlgorithm(broker, DbBrokerService(broker, TickerHistoryRepository(sync_session)))
         simulator = MarketSimulator(Broker=broker, dateEnd=task_data.date_to, algorithm=algos)
         sandbox_output = simulator.simulate()
