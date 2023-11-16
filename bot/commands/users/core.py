@@ -55,17 +55,8 @@ async def set_start_date(callback_query: CallbackQuery,
         return
 
     def convert_to_date_format(date: datetime) -> str:
-        copy_date = datetime(
-            year=date.year,
-            month=date.month,
-            day=date.day,
-            hour=7,
-            minute = 0,
-            second = 0,
-            microsecond = 0,
-        )
-
-        return str(copy_date)
+        date = date.replace(hour=7, minute=0, second=0, microsecond=0)
+        return str(date)
 
     await state.update_data({'date_start': convert_to_date_format(date_start)})
     await state.set_state(CoreSetup.data_end)
@@ -86,17 +77,8 @@ async def set_end_date(callback_query: CallbackQuery,
         return
 
     def convert_to_date_format(date: datetime) -> str:
-        copy_date = datetime(
-            year=date.year,
-            month=date.month,
-            day=date.day,
-            hour=7,
-            minute = 0,
-            second = 0,
-            microsecond = 0,
-        )
-
-        return str(copy_date)
+        date = date.replace(hour=7, minute=0, second=0, microsecond=0)
+        return str(date)
 
     await state.update_data({'date_end': convert_to_date_format(date_end)})
     await state.set_state(CoreSetup.commission)
