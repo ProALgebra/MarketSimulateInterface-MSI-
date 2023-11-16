@@ -1,4 +1,4 @@
-from shared.dbs.postgres.ticker_repository import TickerHistoryRepository
+from shared.dbs.postgres.repositories.ticker import TickerHistoryRepository
 from core.sandbox import Broker,Share
 
 from dateutil.relativedelta import relativedelta

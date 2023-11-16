@@ -1,7 +1,7 @@
 from core.sandbox import Portfolio
 from core.dbBrokerService import DbBrokerService
 from shared.dbs.postgres.postgresql import sync_session
-from shared.dbs.postgres.ticker_repository import TickerHistoryRepository
+from shared.dbs.postgres.repositories.ticker import TickerHistoryRepository
 
 class MarketSimulator:
     def __init__(self, Broker, dateEnd, algorithm):

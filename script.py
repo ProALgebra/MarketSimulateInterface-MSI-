@@ -8,12 +8,13 @@ import pandas as pd
 
 from core.dbBrokerService import DbBrokerService
 from datetime import datetime, date, time, timezone, timedelta
-from shared.dbs.postgres.ticker_repository import TickerHistoryRepository
+from shared.dbs.postgres.repositories.ticker import TickerHistoryRepository
 from shared.dbs.postgres.postgresql import sync_session
 from core.sandbox import Broker,Share,Ticker
 from core.marketSimulator import MarketSimulator
 from metrics_module.metrics import Metrics
 from graphics.graph import *
+from math import ceil
 
 ticker_repo = TickerHistoryRepository(sync_session)
 
@@ -55,7 +56,7 @@ class MarketAlgorithm:
                         print(f"При попытке купить {actions_cover_10_percent} "
                                          f"{tiker} произошла ошибка: на балансе кошелька недостаточно средств")
                 else:
-                    self.market.sell(Ticker(tiker), int(self.market.get_portfolio().shares[Ticker(tiker)]))
+                    self.market.sell(Ticker(tiker), int(ceil(self.market.get_portfolio().shares[Ticker(tiker)] / 2)))
             else:
                 actions_cover_10_percent = round(self.market.get_portfolio().shares[Ticker(tiker)])
                 self.market.sell(Ticker(tiker), actions_cover_10_percent)

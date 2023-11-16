@@ -1,7 +1,7 @@
 import datetime
 from typing import Dict
 from dateutil.relativedelta import relativedelta
-from shared.dbs.postgres.ticker_repository import TickerHistoryRepository
+from shared.dbs.postgres.repositories.ticker import TickerHistoryRepository
 
 
 

@@ -1,7 +1,7 @@
 # import database
 from graphics.graph import *
 from data import *
-from shared.dbs.postgres.ticker_repository import TickerHistoryRepository
+from shared.dbs.postgres.repositories.ticker import TickerHistoryRepository
 
 class database:
     def __init__(self):
@@ -126,7 +126,6 @@ class Metrics:
                 tiker_count_prev = 0
             tiker_diff = tiker_count_current - tiker_count_prev
             diff_cost = tiker_diff * tiker_cost
-            print(diff_cost)
             comission += diff_cost
 
         comission = comission * self.comission_coefficient
