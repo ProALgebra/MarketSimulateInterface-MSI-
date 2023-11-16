@@ -120,16 +120,16 @@ msgstr "Внимание! Обнаружено большое количеств
 
 #: middlewares/registrations.py:34
 msgid "get_history"
-msgstr "Получить историю запросов"
+msgstr "Получить историю запросов📜"
 
 #: middlewares/registrations.py:34
 msgid "change_name"
-msgstr "Сменить имя пользователя"
+msgstr "Сменить имя пользователя🔄"
 
 #: middlewares/registrations.py:34
 msgid "change_language"
-msgstr "Сменить язык"
+msgstr "Сменить язык🌐"
 
 #: middlewares/registrations.py:34
 msgid "core_start"
-msgstr "Протестировать алгоритм"
+msgstr "Протестировать алгоритм🧪"
