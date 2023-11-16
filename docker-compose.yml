@@ -1,6 +1,19 @@
 version: "3.9"
 
 services:
+  tg-bot:
+    container_name: "tg-bot"
+    build:
+      context: .
+      dockerfile: bot/Dockerfile
+    entrypoint: python3 bot/bot_start.py
+    env_file: .env.dev
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+
   sandbox-worker:
     container_name: "sandbox-worker"
     build:

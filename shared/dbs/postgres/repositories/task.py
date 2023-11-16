@@ -62,7 +62,7 @@ class AsyncTaskRepository:
             await session.execute(stmt)
             await session.commit()
 
-    async def insert_task(self, user_id: int, date_from: datetime, date_to: datetime, commission: float)  -> UUID:
+    async def insert_task(self, user_id: int, date_from: datetime, date_to: datetime, commission: float, start_cash: float)  -> UUID:
         task_id = uuid4()
         async with self.session() as session:
             session.add(
@@ -71,7 +71,8 @@ class AsyncTaskRepository:
                     user_id=user_id,
                     date_from=date_from,
                     date_to=date_to,
-                    commission=commission
+                    commission=commission,
+                    start_cash=start_cash
                 )
             )
             await session.commit()
