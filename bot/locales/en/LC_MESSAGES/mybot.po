@@ -18,6 +18,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.12.1\n"
 
+#: keyboards/account.py:27
+msgid "core_test"
+msgstr "🚀Test strategy"
 
 #: commands/users/account.py:37
 msgid "NO_HISTORY"

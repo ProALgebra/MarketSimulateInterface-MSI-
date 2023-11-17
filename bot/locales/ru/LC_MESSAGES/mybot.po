@@ -86,6 +86,10 @@ msgstr "Приветствую тебя, трейдер-исследовател
 msgid "REGISTRATIONS"
 msgstr "Регистрация"
 
+#: keyboards/account.py:27
+msgid "core_test"
+msgstr "🚀Тестовая стратегия"
+
 #: keyboards/account.py:51
 msgid "task_infi"
 msgstr "Задача: {} {} {}"

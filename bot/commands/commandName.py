@@ -10,6 +10,7 @@ CORE_START = 'core_start'
 CORE_COMMISIONS = 'core_commisions'
 CORE_CASH = 'core_cash'
 CORE_SOURCE = 'core_source'
+CORE_TEST = 'core_test'
 
 SET_RU_LANGUAGE = 'ru'
 SET_EN_LANGUAGE = 'en'

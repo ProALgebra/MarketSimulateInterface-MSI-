@@ -23,7 +23,7 @@ from aiogram.types import CallbackQuery
 from aiogram.filters.callback_data import CallbackData
 
 from shared.dbs.postgres.repositories.task import AsyncTaskRepository
-from commands.commandName import CORE_START, CORE_SOURCE, CORE_CASH, CORE_COMMISIONS
+from commands.commandName import (CORE_START, CORE_SOURCE, CORE_CASH, CORE_COMMISIONS, CORE_TEST)
 from filters import ChatTypeFilter
 from callbacks import CoreStepData
 from states import CoreSetup
@@ -38,7 +38,8 @@ core_router = Router()
 async def choise(callback_query: types.CallbackQuery,
                  callback_data: CoreStepData,
                  state: FSMContext,
-                 bot: Bot):
+                 bot: Bot,
+                 task_repo: AsyncTaskRepository):
     if callback_data.step == CORE_SOURCE:
         await bot.edit_message_text(chat_id=callback_query.message.chat.id,
                                     message_id=callback_query.message.message_id,
@@ -58,6 +59,31 @@ async def choise(callback_query: types.CallbackQuery,
                                     message_id=callback_query.message.message_id,
                                     text=_('COMMISSION'))
         await state.set_state(CoreSetup.commission)
+        return
+
+    if callback_data.step == CORE_TEST:
+        data = await state.get_data()
+        date_start: str = data['date_start']
+        date_end: str = data['date_end']
+        commission: float = data['commission']
+        start_cash: float = data['start_cash']
+
+        uuid4: UUID = await task_repo.insert_task(user_id=int(callback_query.from_user.id),
+                                                  date_from=datetime.strptime(date_start, "%Y-%m-%d %H:%M:%S"),
+                                                  date_to=datetime.strptime(date_end, "%Y-%m-%d %H:%M:%S"),
+                                                  commission=float(commission),
+                                                  start_cash=float(start_cash))
+
+        zip_repo: ZipRepository = ZipRepository(client=client)
+        zip: bytes = zip_repo.get_zip_by_task_id('07f5469d-b56a-4e19-bc9b-1286e4b1d213')
+        zip_repo.put_zip(uuid4, io.BytesIO(zip), len(zip))
+
+        run_sandbox.send(str(uuid4))
+
+        await bot.send_message(chat_id=callback_query.message.chat.id,
+                               message_id=callback_query.message.message_id,
+                               text=_('CORE_GET_START_CALCULATE'))
+        await state.set_state()
         return
 
 @core_router.message(
