@@ -6,6 +6,10 @@ from aiogram.enums import ChatType
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.utils.i18n import gettext as _, lazy_gettext as __
+from aiogram.types import BufferedInputFile, InputMediaPhoto
+
+from shared.dbs.minio.client import client as minio_client
+from shared.dbs.minio.plot_repository import PlotRepository
 
 from filters.chat_type_filter import ChatTypeFilter
 from shared.dbs.postgres.repositories.users import UserRepo
@@ -22,10 +26,10 @@ account_router = Router()
 
 
 @account_router.message(Command(GET_PROFILE), flags={"chat_action": "typing"})
-@account_router.message(F.text==__(GET_PROFILE), flags={"chat_action": "typing"})
+@account_router.message(F.text==__('GET_PROFILE_KB'), flags={"chat_action": "typing"})
 async def get_profile(message: types.Message, user_repo: UserRepo):
     user: Users = await user_repo.get_by_tg_id(message.from_user.id)
-    profile: str = _(GET_PROFILE).format(user.name, user.commisions)
+    profile: str = _(GET_PROFILE).format(user.name, user.commisions, user.telegram_id)
     await message.answer(text=profile)
 
 @account_router.message(Command(GET_HISTORY), flags={"chat_action": "typing"})
@@ -82,6 +86,7 @@ async def research_task_info(
     task_repo: AsyncTaskRepository,
     callback_data: TasksData,
     state: FSMContext,
+    bot: Bot
 ):
     await callback.answer()
     data = await state.get_data()
@@ -92,7 +97,20 @@ async def research_task_info(
     task: Tasks = await task_repo.get_task_by_id(callback_data.task_id)
     tasks: list[Tasks] = await task_repo.get_tasks_by_user(callback.from_user.id)
 
-    await callback.message.edit_text(
+    plot_repo: PlotRepository = PlotRepository(client=minio_client)
+    images: [bytes] = plot_repo.get_plots_by_task_id(task_id=callback_data.task_id)
+
+    tatal_at_first_day, tatal_at_last_day = task.result['tatal_at_first_day'], task.result['tatal_at_last_day']
+    total_commissions, total_pnl = task.result['total_commissions'], task.result['total_pnl']
+
+    text: str = _('result').format(tatal_at_first_day, tatal_at_last_day, total_commissions, total_pnl)
+
+    bf: list[InputMediaPhoto] = [InputMediaPhoto(media=BufferedInputFile(file=image, filename='def')) for image in images]
+    await bot.send_message(chat_id=task.user_id, text=text)
+    await bot.send_media_group(chat_id=task.user_id, media=bf)
+
+    await bot.send_message(
+        chat_id=callback.from_user.id,
         text=str(task.result),
         reply_markup=kb.tasks(tasks=tasks, offset=offset, limit=limit)
     )

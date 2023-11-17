@@ -17,18 +17,48 @@ from aiogram.enums import ChatType
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram import F, Router, types
-from aiogram.utils.i18n import gettext as _
+from aiogram.utils.i18n import gettext as _, lazy_gettext as __
 from aiogram_calendar import SimpleCalendar, SimpleCalendarCallback
 from aiogram.types import CallbackQuery
 from aiogram.filters.callback_data import CallbackData
 
 from shared.dbs.postgres.repositories.task import AsyncTaskRepository
-from commands.commandName import CORE_START
+from commands.commandName import CORE_START, CORE_SOURCE, CORE_CASH, CORE_COMMISIONS
 from filters import ChatTypeFilter
+from callbacks import CoreStepData
 from states import CoreSetup
+import keyboards as kb
 
 core_router = Router()
 
+
+@core_router.callback_query(CoreStepData.filter(), CoreSetup.choise)
+@core_router.callback_query(CoreStepData.filter(), CoreSetup.start_cash)
+@core_router.callback_query(CoreStepData.filter(), CoreSetup.commission)
+async def choise(callback_query: types.CallbackQuery,
+                 callback_data: CoreStepData,
+                 state: FSMContext,
+                 bot: Bot):
+    if callback_data.step == CORE_SOURCE:
+        await bot.edit_message_text(chat_id=callback_query.message.chat.id,
+                                    message_id=callback_query.message.message_id,
+                                    text=_('SOURCE'))
+        await state.set_state(CoreSetup.source)
+        return
+
+    if callback_data.step == CORE_CASH:
+        await bot.edit_message_text(chat_id=callback_query.message.chat.id,
+                                    message_id=callback_query.message.message_id,
+                                    text=_('START_CASH'))
+        await state.set_state(CoreSetup.start_cash)
+        return
+
+    if callback_data.step == CORE_COMMISIONS:
+        await bot.edit_message_text(chat_id=callback_query.message.chat.id,
+                                    message_id=callback_query.message.message_id,
+                                    text=_('COMMISSION'))
+        await state.set_state(CoreSetup.commission)
+        return
 
 @core_router.message(
     ChatTypeFilter(chat_type=[ChatType.PRIVATE]),
@@ -36,7 +66,7 @@ core_router = Router()
     flags={"chat_action": "typing"})
 @core_router.message(
     ChatTypeFilter(chat_type=[ChatType.PRIVATE]),
-    F.text==CORE_START,
+    F.text==__(CORE_START),
     flags={"chat_action": "typing"})
 async def cmd_core_start(message: types.Message,
                          state: FSMContext):
@@ -52,6 +82,13 @@ async def set_start_date(callback_query: CallbackQuery,
     select, date_start = await SimpleCalendar().process_selection(callback_query, callback_data)
 
     if not select:
+        return
+
+    if date_start > datetime(day=12, month=11, year=2023):
+        await bot.edit_message_text(chat_id=callback_query.message.chat.id,
+                                    message_id=callback_query.message.message_id,
+                                    text=_('INVALIDE_START_MESSAGE'),
+                                    reply_markup= await SimpleCalendar().start_calendar())
         return
 
     def convert_to_date_format(date: datetime) -> str:
@@ -76,16 +113,36 @@ async def set_end_date(callback_query: CallbackQuery,
     if not select:
         return
 
+    data: dict = await state.get_data()
+    date_start: datetime = data['date_start']
+
+    if datetime.strptime(date_start, "%Y-%m-%d %H:%M:%S") >= date_end:
+        await bot.edit_message_text(chat_id=callback_query.message.chat.id,
+                                    message_id=callback_query.message.message_id,
+                                    text=_('INVALIDE_END_MESSAGE'),
+                                    reply_markup= await SimpleCalendar().start_calendar())
+        return
+
+    if date_end > datetime(day=12, month=11, year=2023):
+        await bot.edit_message_text(chat_id=callback_query.message.chat.id,
+                                    message_id=callback_query.message.message_id,
+                                    text=_('INVALIDE_END_MESSAGE_FEUTERES'),
+                                    reply_markup= await SimpleCalendar().start_calendar())
+        return
+
     def convert_to_date_format(date: datetime) -> str:
         date = date.replace(hour=7, minute=0, second=0, microsecond=0)
         return str(date)
 
     await state.update_data({'date_end': convert_to_date_format(date_end)})
-    await state.set_state(CoreSetup.commission)
+    await state.set_state(CoreSetup.choise)
 
-    await bot.edit_message_text(text=_('COMMISSION'),
-                                chat_id=callback_query.message.chat.id,
-                                message_id=callback_query.message.message_id)
+    commisions = True if 'commission' in data.keys() else False
+    cash = True if 'start_cash' in data.keys() else False
+
+    await bot.send_message(text=_('CHOISE'),
+                           chat_id=callback_query.message.chat.id,
+                           reply_markup=kb.core_step(source=commisions and cash))
 
 @core_router.message(CoreSetup.commission)
 async def set_commission(message: types.Message, state: FSMContext):
@@ -105,8 +162,14 @@ async def set_commission(message: types.Message, state: FSMContext):
     await state.update_data({'commission': commission})
     await state.set_state(CoreSetup.start_cash)
 
-    await message.answer(text=_('START_CASH'))
+    data: dict = await state.get_data()
+    await state.set_state(CoreSetup.choise)
 
+    commisions = True if 'commission' in data.keys() else False
+    cash = True if 'start_cash' in data.keys() else False
+
+    await message.answer(text=_('CHOISE'),
+                         reply_markup=kb.core_step(source=commisions and cash))
 
 @core_router.message(CoreSetup.start_cash)
 async def set_start_cash(message: types.Message, state: FSMContext):
@@ -125,9 +188,14 @@ async def set_start_cash(message: types.Message, state: FSMContext):
         return
 
     await state.update_data({'start_cash': start_cash})
-    await state.set_state(CoreSetup.source)
+    data: dict = await state.get_data()
+    await state.set_state(CoreSetup.choise)
 
-    await message.answer(text=_('SOURCE'))
+    commisions = True if 'commission' in data.keys() else False
+    cash = True if 'start_cash' in data.keys() else False
+
+    await message.answer(text=_('CHOISE'),
+                         reply_markup=kb.core_step(source=commisions and cash))
 
 @core_router.message(CoreSetup.source, F.content_type==ContentType.DOCUMENT)
 async def set_source(message: types.Message,

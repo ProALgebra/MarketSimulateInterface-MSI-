@@ -18,13 +18,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.12.1\n"
 
-#: commands/users/account.py:28
-msgid "get_profile"
-msgstr "User data: {} : {}"
-
-#: commands/users/account.py:28
-msgid "GET_PROFILE_KB"
-msgstr "User data📊"
 
 #: commands/users/account.py:37
 msgid "NO_HISTORY"
@@ -88,6 +81,10 @@ msgstr "Greetings, trader-researcher! 🚀 Welcome to the world of trading oppor
 Here you can test your trading algorithm and fine-tune it to perfection.
 Is your algorithm ready to challenge the market? Let's dive into the world of finance together! 💹✨"
 
+#: keyboards/account.py:27
+msgid "REGISTRATIONS"
+msgstr "Registrations"
+
 #: keyboards/account.py:51
 msgid "task_infi"
 msgstr "Task: {} : {} : {}"
@@ -104,27 +101,56 @@ msgstr "Expect me to work on your request. Thank you for your patience!⏳"
 msgid "REGISTRATIONS_MESSAGE"
 msgstr "To get started with our service, please register."
 
-#: commands/users/account.py:28
-msgid "REGISTRATIONS"
-msgstr "Registrations"
-
 #: middlewares/throttling.py:35
 msgid "THROTTLED_MESSAGE"
 msgstr "Attention! A large number of messages were detected in a short period of time. This may overload the system.
 Please take this into account when sending messages and give us some time to process. Thank you for understanding! ⚠️🕒"
 
-#: middlewares/registrations.py:34
+msgid "get_profile"
+msgstr "User data:
+        😉{}
+        ✨{}
+        🤖{}"
+
+msgid "GET_PROFILE_KB"
+msgstr "User data📊"
+
+msgid "result"
+msgstr "⭐️First day: {}
+        🌚Last day: {}
+        🤬Commisions: {}
+        🐸Result: {}
+        "
+
+msgid "INVALIDE_END_MESSAGE_FEUTERES"
+msgstr "Even oracles can't see that far😉... Choose a date not from the future"
+
+msgid "CHOISE"
+msgstr "🤖What do you want to fill out next?"
+
+msgid "INVALIDE_START_MESSAGE"
+msgstr "Your date made even ChatGPT think😥... Choose a date not from the future"
+
+msgid "core_commisions"
+msgstr "😉Commission"
+
+msgid "core_cash"
+msgstr "📊Deposit"
+
+msgid "core_source"
+msgstr "💰Strategy"
+
+msgid "INVALIDE_END_MESSAGE"
+msgstr "And what is it? The start date must be less than the end date..."
+
 msgid "get_history"
 msgstr "Get request history📜"
 
-#: middlewares/registrations.py:34
 msgid "change_name"
 msgstr "Change user name🔄"
 
-#: middlewares/registrations.py:34
 msgid "change_language"
 msgstr "Change the language🌐"
 
-#: middlewares/registrations.py:34
 msgid "core_start"
 msgstr "Test the algorithm🧪"

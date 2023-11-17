@@ -5,6 +5,7 @@ from uuid import UUID
 import dramatiq
 from dramatiq import actor as dramatiq_actor
 from aiogram import Bot
+from aiogram.utils.i18n import gettext as _
 from aiogram.enums import ParseMode
 from aiogram.types import BufferedInputFile, InputMediaPhoto
 from dramatiq.brokers.rabbitmq import RabbitmqBroker
@@ -103,7 +104,12 @@ def send_tg_result(task_id: str):
     task: Tasks = TaskRepository(session=sync_session).get_task_by_id(task_id=task_id)
     images: [bytes] = plot_repo.get_plots_by_task_id(task_id=task_id)
 
-    bf: list[InputMediaPhoto] = [InputMediaPhoto(media=BufferedInputFile(file=image, filename='def')) for image in
-                                 images]
-    asyncio.run(bot.send_media_group(chat_id=task.user_id,
-                                     media=bf))
+    tatal_at_first_day, tatal_at_last_day = task.result['tatal_at_first_day'], task.result['tatal_at_last_day']
+    total_commissions, total_pnl = task.result['total_commissions'], task.result['total_pnl']
+
+    text: str = _('result').format(tatal_at_first_day, tatal_at_last_day, total_commissions, total_pnl)
+
+    bf: list[InputMediaPhoto] = [InputMediaPhoto(media=BufferedInputFile(file=image, filename='def')) for image in images]
+    asyncio.run(bot.send_message(chat_id=task.user_id, text=text))
+    asyncio.run(bot.send_media_group(chat_id=task.user_id, media=bf))
+

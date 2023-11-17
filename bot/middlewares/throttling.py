@@ -21,6 +21,10 @@ class ThrottlingMiddleware(BaseMiddleware):
         event: Union[Message, CallbackQuery],
         data: TransferData,
     ) -> Any:
+
+        if isinstance(event, CallbackQuery):
+            return await handler(event, data)
+
         cache: Cache = data.get("cache")
 
         user_id = event.from_user.id
