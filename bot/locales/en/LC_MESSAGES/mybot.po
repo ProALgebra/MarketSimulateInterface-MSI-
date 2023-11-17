@@ -26,6 +26,10 @@ msgstr "🚀Test strategy"
 msgid "NO_HISTORY"
 msgstr "It seems you haven't tested any strategies yet🙄"
 
+#: commands/users/account.py:37
+msgid "CORE_GET_START_CALCULATE"
+msgstr "✨We interview oracles, persuade shamans to share information... Calculation is underway✨"
+
 #: commands/users/account.py:103
 msgid "ask_for_language"
 msgstr "What language do you prefer?"
