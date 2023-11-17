@@ -111,7 +111,7 @@ async def research_task_info(
 
     await bot.send_message(
         chat_id=callback.from_user.id,
-        text=str(task.result),
+        text=_(GET_HISTORY),
         reply_markup=kb.tasks(tasks=tasks, offset=offset, limit=limit)
     )
 

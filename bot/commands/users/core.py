@@ -75,13 +75,12 @@ async def choise(callback_query: types.CallbackQuery,
                                                   start_cash=float(start_cash))
 
         zip_repo: ZipRepository = ZipRepository(client=client)
-        zip: bytes = zip_repo.get_zip_by_task_id('07f5469d-b56a-4e19-bc9b-1286e4b1d213')
+        zip: bytes = zip_repo.get_zip_by_task_id("7f5ec5ba-cdf0-4ce9-939f-1ccc4308b968")
         zip_repo.put_zip(uuid4, io.BytesIO(zip), len(zip))
 
         run_sandbox.send(str(uuid4))
 
         await bot.send_message(chat_id=callback_query.message.chat.id,
-                               message_id=callback_query.message.message_id,
                                text=_('CORE_GET_START_CALCULATE'))
         await state.set_state()
         return
