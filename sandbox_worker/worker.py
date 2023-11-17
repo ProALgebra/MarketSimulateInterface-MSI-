@@ -103,7 +103,7 @@ def send_tg_result(task_id: str):
     task: Tasks = TaskRepository(session=sync_session).get_task_by_id(task_id=task_id)
     images: [bytes] = plot_repo.get_plots_by_task_id(task_id=task_id)
 
-    tatal_at_first_day, tatal_at_last_day = task.result['tatal_at_first_day'], task.result['tatal_at_last_day']
+    tatal_at_first_day, tatal_at_last_day = task.result['total_at_first_day'], task.result['total_at_last_day']
     total_commissions, total_pnl = task.result['total_commissions'], task.result['total_pnl']
 
     text: str = _('result').format(total_at_first_day, total_at_last_day, total_commissions, total_pnl)
