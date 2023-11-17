@@ -106,7 +106,7 @@ def send_tg_result(task_id: str):
     tatal_at_first_day, tatal_at_last_day = task.result['total_at_first_day'], task.result['total_at_last_day']
     total_commissions, total_pnl = task.result['total_commissions'], task.result['total_pnl']
 
-    text: str = _('result').format(total_at_first_day, total_at_last_day, total_commissions, total_pnl)
+    text: str = _('result').format(tatal_at_first_day, tatal_at_last_day, total_commissions, total_pnl)
 
     bf: list[InputMediaPhoto] = [InputMediaPhoto(media=BufferedInputFile(file=image, filename='def')) for image in images]
     asyncio.run(bot.send_message(chat_id=task.user_id, text=text))

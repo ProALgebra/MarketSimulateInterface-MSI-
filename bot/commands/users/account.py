@@ -100,7 +100,7 @@ async def research_task_info(
     plot_repo: PlotRepository = PlotRepository(client=minio_client)
     images: [bytes] = plot_repo.get_plots_by_task_id(task_id=callback_data.task_id)
 
-    tatal_at_first_day, tatal_at_last_day = task.result['tatal_at_first_day'], task.result['tatal_at_last_day']
+    tatal_at_first_day, tatal_at_last_day = task.result['total_at_first_day'], task.result['total_at_last_day']
     total_commissions, total_pnl = task.result['total_commissions'], task.result['total_pnl']
 
     text: str = _('result').format(tatal_at_first_day, tatal_at_last_day, total_commissions, total_pnl)
