@@ -29,7 +29,7 @@ from shared.settings import TELEGRAM_TOKEN
 broker = RabbitmqBroker(host=MQ_HOST)
 dramatiq.set_broker(broker)
 
-
+@dramatiq_actor
 def run_sandbox(task_id: str):
     try:
         task_id: UUID = UUID(task_id)
