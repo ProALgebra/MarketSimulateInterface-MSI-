@@ -4,7 +4,7 @@ from metrics_module.data import *
 from shared.dbs.postgres.repositories.ticker import TickerHistoryRepository
 
 class Metrics:
-    def __init__(self, logs, task_id, dataBase :TickerHistoryRepository, ):
+    def __init__(self, logs, task_id, dataBase :TickerHistoryRepository, comis):
         self.totals = None
         self.DPNL = None
         self.relative_totals = None
@@ -23,7 +23,7 @@ class Metrics:
         self.relativeTotal()
         self.balancee()
         self.createDPNL()
-        self.commission_coefficient = 0.004
+        self.commission_coefficient = comis
         self.create_comissions()
         self.make_single_params()
 

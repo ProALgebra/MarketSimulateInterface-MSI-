@@ -30,7 +30,6 @@ broker = RabbitmqBroker(host=MQ_HOST)
 dramatiq.set_broker(broker)
 
 
-@dramatiq_actor
 def run_sandbox(task_id: str):
     try:
         task_id: UUID = UUID(task_id)
@@ -48,7 +47,7 @@ def run_sandbox(task_id: str):
     task_data = task_repo.get_task_by_id(task_id)
 
     # запустить песок с параметрами из task_data
-    broker = Broker(task_data.date_from, 400000, TickerHistoryRepository(sync_session))
+    broker = Broker(task_data.date_from, task_data.start_cash, TickerHistoryRepository(sync_session))
 
     exec(client_source_code, globals())
     algos = MarketAlgorithm(broker, DbBrokerService(broker, TickerHistoryRepository(sync_session)))
@@ -56,10 +55,10 @@ def run_sandbox(task_id: str):
     sandbox_output = simulator.simulate()
 
     # обработать результат песка, сохранить
-    metrics = Metrics(logs=sandbox_output, task_id=task_id, dataBase=TickerHistoryRepository(sync_session))
+    metrics = Metrics(logs=sandbox_output, task_id=task_id, dataBase=TickerHistoryRepository(sync_session), comis = float(task_data.commission))
 
-    task_repo.update_task_result(task_id, {"tatal_at_first_day": metrics.total_at_first_day,
-                                           "tatal_at_last_day": metrics.total_at_last_day,
+    task_repo.update_task_result(task_id, {"total_at_first_day": metrics.total_at_first_day,
+                                           "total_at_last_day": metrics.total_at_last_day,
                                            "total_commissions": metrics.total_commission,
                                            "total_pnl": metrics.pnl,
                                            "return_message": 0
@@ -107,7 +106,7 @@ def send_tg_result(task_id: str):
     tatal_at_first_day, tatal_at_last_day = task.result['tatal_at_first_day'], task.result['tatal_at_last_day']
     total_commissions, total_pnl = task.result['total_commissions'], task.result['total_pnl']
 
-    text: str = _('result').format(tatal_at_first_day, tatal_at_last_day, total_commissions, total_pnl)
+    text: str = _('result').format(total_at_first_day, total_at_last_day, total_commissions, total_pnl)
 
     bf: list[InputMediaPhoto] = [InputMediaPhoto(media=BufferedInputFile(file=image, filename='def')) for image in images]
     asyncio.run(bot.send_message(chat_id=task.user_id, text=text))
